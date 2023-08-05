@@ -6,7 +6,7 @@
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 09:15:07 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/05 11:11:42 by kemizuki         ###   ########.fr       */
+/*   Updated: 2023/08/05 18:56:00 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 #include "error/error.h"
 #include "internal.h"
 #include <errno.h>
+#include <limits.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include <limits.h>
 
 static bool	is_valid_number(const char *s)
 {
@@ -52,7 +52,7 @@ static bool	is_valid_args(int argc, char **argv)
 
 static int	set_args(t_philo_args *args, int argc, char **argv)
 {
-	unsigned int 	*dest[5];
+	unsigned int	*dest[5];
 	unsigned int	i;
 
 	dest[0] = &args->num_philosophers;

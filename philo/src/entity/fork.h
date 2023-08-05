@@ -1,16 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*   fork.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kemizuki <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/16 17:49:46 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/05 18:55:49 by kemizuki         ###   ########.fr       */
+/*   Created: 2023/08/05 11:22:06 by kemizuki          #+#    #+#             */
+/*   Updated: 2023/08/05 18:56:10 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isdigit(int c)
+#ifndef FORK_H
+# define FORK_H
+
+# include <pthread.h>
+
+typedef struct s_fork
 {
-	return ('0' <= c && c <= '9');
-}
+	unsigned int	id;
+	pthread_mutex_t	lock;
+}					t_fork;
+
+#endif
