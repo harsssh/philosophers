@@ -13,10 +13,10 @@
 #include "args.h"
 #include "error/error.h"
 #include "internal.h"
-#include "util/util.h"
 #include <errno.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <limits.h>
 
 static bool	is_valid_number(const char *s)
 {
@@ -52,7 +52,7 @@ static bool	is_valid_args(int argc, char **argv)
 
 static int	set_args(t_philo_args *args, int argc, char **argv)
 {
-	unsigned long	*dest[5];
+	unsigned int 	*dest[5];
 	unsigned int	i;
 
 	dest[0] = &args->num_philosophers;
@@ -69,7 +69,7 @@ static int	set_args(t_philo_args *args, int argc, char **argv)
 	while (i < (unsigned int)argc - 1)
 	{
 		*dest[i] = ft_atol(argv[i + 1]);
-		if (errno == ERANGE)
+		if (errno == ERANGE || *dest[i] > UINT_MAX)
 		{
 			print_colored_error(E_TOO_LARGE_ARG);
 			return (-1);

@@ -17,11 +17,11 @@
 
 typedef struct s_philo_args
 {
-	unsigned long	num_philosophers;
-	unsigned long	die_time;
-	unsigned long	eat_time;
-	unsigned long	sleep_time;
-	unsigned long	min_eat_count;
+	unsigned int	num_philosophers;
+	unsigned int	die_time;
+	unsigned int	eat_time;
+	unsigned int	sleep_time;
+	unsigned int	min_eat_count;
 	bool			has_optional_arg;
 }					t_philo_args;
 
