@@ -2,3 +2,4 @@ build
 a.out
 .DS_Store
 .idea
+cmake-build-debug
