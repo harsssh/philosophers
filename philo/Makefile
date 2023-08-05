@@ -3,7 +3,7 @@ NAME:=philo
 SRC_DIR=src
 BUILD_DIR:=build
 
-CFLAGS:=-Wall -Wextra -Werror -Ilibft/include -Isrc
+CFLAGS:=-g -fsanitize=thread -Wall -Wextra -Werror -Ilibft/include -Isrc
 DEPFLAGS=-MT $@ -MMD -MP -MF $(BUILD_DIR)/$*.d
 
 SRC:=$(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/**/*.c)

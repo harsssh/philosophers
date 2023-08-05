@@ -1,32 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/05 08:55:46 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/05 11:01:20 by kemizuki         ###   ########.fr       */
+/*   Created: 2023/08/05 09:59:12 by kemizuki          #+#    #+#             */
+/*   Updated: 2023/08/05 11:09:23 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "args/args.h"
-#include "stddef.h"
-#include "error/error.h"
-#include <stdio.h>
+#include "error.h"
+#include "internal.h"
+#include <unistd.h>
 
-#define EXIT_SUCCESS 0
-#define EXIT_FAILURE 1
-
-int	main(int argc, char **argv)
+void	print_error(const char *message)
 {
-	t_philo_args	*args;
+	size_t	len;
 
-	args = parse_args(argc, argv);
-	if (args == NULL)
-	{
-		print_error(USAGE);
-		return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
+	len = ft_strlen(message);
+	write(STDERR_FILENO, message, len);
+}
+
+void	print_colored_error(const char *message)
+{
+	write(STDERR_FILENO, RED_COLOR, sizeof(RED_COLOR) - 1);
+	print_error(message);
+	write(STDERR_FILENO, RESET_COLOR, sizeof(RESET_COLOR) - 1);
 }

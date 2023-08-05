@@ -1,32 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   internal.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/05 08:55:46 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/05 11:01:20 by kemizuki         ###   ########.fr       */
+/*   Created: 2023/08/05 09:22:26 by kemizuki          #+#    #+#             */
+/*   Updated: 2023/08/05 10:15:19 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "args/args.h"
-#include "stddef.h"
-#include "error/error.h"
-#include <stdio.h>
+#ifndef INTERNAL_H
+# define INTERNAL_H
 
-#define EXIT_SUCCESS 0
-#define EXIT_FAILURE 1
+int		ft_isspace(int c);
+int		ft_isdigit(int c);
+long	ft_atol(const char *str);
 
-int	main(int argc, char **argv)
-{
-	t_philo_args	*args;
-
-	args = parse_args(argc, argv);
-	if (args == NULL)
-	{
-		print_error(USAGE);
-		return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
-}
+#endif

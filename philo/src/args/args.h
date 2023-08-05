@@ -1,32 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   args.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/05 08:55:46 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/05 11:01:20 by kemizuki         ###   ########.fr       */
+/*   Created: 2023/08/03 17:56:54 by kemizuki          #+#    #+#             */
+/*   Updated: 2023/08/05 10:53:05 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "args/args.h"
-#include "stddef.h"
-#include "error/error.h"
-#include <stdio.h>
+#ifndef ARGS_H
+# define ARGS_H
 
-#define EXIT_SUCCESS 0
-#define EXIT_FAILURE 1
+# include "stdbool.h"
 
-int	main(int argc, char **argv)
+typedef struct s_philo_args
 {
-	t_philo_args	*args;
+	unsigned long	num_philosophers;
+	unsigned long	die_time;
+	unsigned long	eat_time;
+	unsigned long	sleep_time;
+	unsigned long	min_eat_count;
+	bool			has_optional_arg;
+}					t_philo_args;
 
-	args = parse_args(argc, argv);
-	if (args == NULL)
-	{
-		print_error(USAGE);
-		return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
-}
+t_philo_args		*parse_args(int argc, char **argv);
+
+#endif
