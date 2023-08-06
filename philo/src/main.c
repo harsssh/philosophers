@@ -20,10 +20,10 @@
 
 int	main(int argc, char **argv)
 {
-	t_philo_args	*args;
+	t_philo_config	*config;
 
-	args = parse_args(argc, argv);
-	if (args == NULL)
+	config = parse_args(argc, argv);
+	if (config == NULL)
 	{
 		print_error(USAGE);
 		return (EXIT_FAILURE);

@@ -15,7 +15,7 @@
 
 # include "stdbool.h"
 
-typedef struct s_philo_args
+typedef struct s_philo_config
 {
 	unsigned int	num_philosophers;
 	unsigned int	die_time;
@@ -23,8 +23,8 @@ typedef struct s_philo_args
 	unsigned int	sleep_time;
 	unsigned int	min_eat_count;
 	bool			has_optional_arg;
-}					t_philo_args;
+}					t_philo_config;
 
-t_philo_args		*parse_args(int argc, char **argv);
+t_philo_config		*parse_args(int argc, char **argv);
 
 #endif
