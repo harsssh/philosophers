@@ -17,7 +17,7 @@
 
 typedef struct s_philo_config
 {
-	unsigned int	num_philosophers;
+	unsigned int	num_philos;
 	unsigned int	die_time;
 	unsigned int	eat_time;
 	unsigned int	sleep_time;

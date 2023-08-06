@@ -55,7 +55,7 @@ static int	set_args(t_philo_config *args, int argc, char **argv)
 	unsigned int	*dest[5];
 	unsigned int	i;
 
-	dest[0] = &args->num_philosophers;
+	dest[0] = &args->num_philos;
 	dest[1] = &args->die_time;
 	dest[2] = &args->eat_time;
 	dest[3] = &args->sleep_time;
