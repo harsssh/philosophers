@@ -14,26 +14,27 @@
 #include "thread.h"
 #include <unistd.h>
 
-static void	hold_forks(t_wisdom *wisdom)
+static void	philo_think(t_wisdom *wisdom)
 {
-	pthread_mutex_t	left_fork;
-	pthread_mutex_t	right_fork;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
 
-	left_fork = wisdom->data->forks[wisdom->id];
-	right_fork = wisdom->data->forks[(wisdom->id + 1)
-		% wisdom->data->config->num_philos];
+	print_log(wisdom, MSG_THINK);
+	left_fork = wisdom->data->forks + (wisdom->id - 1);
+	right_fork = wisdom->data->forks + wisdom->id
+			% wisdom->data->config->num_philos;
 	if (wisdom->id == 0)
 	{
-		pthread_mutex_lock(&left_fork);
+		pthread_mutex_lock(left_fork);
 		print_log(wisdom, MSG_TAKE_FORK);
-		pthread_mutex_lock(&right_fork);
+		pthread_mutex_lock(right_fork);
 		print_log(wisdom, MSG_TAKE_FORK);
 	}
 	else
 	{
-		pthread_mutex_lock(&right_fork);
+		pthread_mutex_lock(right_fork);
 		print_log(wisdom, MSG_TAKE_FORK);
-		pthread_mutex_lock(&left_fork);
+		pthread_mutex_lock(left_fork);
 		print_log(wisdom, MSG_TAKE_FORK);
 	}
 }
@@ -44,9 +45,9 @@ static void	philo_eat(t_wisdom *wisdom)
 	gettimeofday(&wisdom->last_eat, NULL);
 	print_log(wisdom, MSG_EAT);
 	usleep(wisdom->data->config->sleep_time * 1000);
-	pthread_mutex_unlock(&wisdom->data->forks[wisdom->id]);
-	pthread_mutex_unlock(&wisdom->data->forks[(wisdom->id + 1)
-		% wisdom->data->config->num_philos]);
+	pthread_mutex_unlock(wisdom->data->forks + (wisdom->id - 1));
+	pthread_mutex_unlock(wisdom->data->forks + wisdom->id
+		% wisdom->data->config->num_philos);
 }
 
 static void	philo_sleep(t_wisdom *wisdom)
@@ -69,7 +70,7 @@ void	*philo_routine(void *arg)
 			break ;
 		}
 		pthread_mutex_unlock(&wisdom->data->terminate_lock);
-		hold_forks(wisdom);
+		philo_think(wisdom);
 		philo_eat(wisdom);
 		philo_sleep(wisdom);
 	}
