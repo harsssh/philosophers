@@ -21,6 +21,7 @@
 # define MSG_THINK "%llu %u is thinking\n"
 # define MSG_DIE "%llu %u died\n"
 
+t_shared_data	*create_shared_data(t_philo_config *config);
 void	destroy_shared_data(t_shared_data *data);
 void	print_log(t_wisdom *wisdom, const char *format);
 

@@ -16,63 +16,25 @@
 #include <pthread.h>
 #include <stdlib.h>
 
-static pthread_mutex_t	*create_forks(t_philo_config *config)
+static int init_wisdoms(t_wisdom *wisdoms, t_shared_data *data)
 {
-	pthread_mutex_t	*forks;
-	unsigned int	i;
+	unsigned int i;
 
-	forks = malloc(sizeof(pthread_mutex_t) * config->num_philos);
-	if (!forks)
-		return (NULL);
 	i = 0;
-	while (i < config->num_philos)
+	while (i < data->config->num_philos)
 	{
-		if (pthread_mutex_init(&forks[i], NULL))
+		if (pthread_mutex_init(&wisdoms[i].last_eat_lock, NULL))
 		{
 			while (i--)
-				pthread_mutex_destroy(&forks[i]);
-			free(forks);
-			return (NULL);
+				pthread_mutex_destroy(&wisdoms[i].last_eat_lock);
+			return (-1);
 		}
+		wisdoms[i].id = i + 1;
+		wisdoms[i].eat_count = 0;
+		wisdoms[i].last_eat = data->start_time;
+		wisdoms[i].data = data;
 		i++;
 	}
-	return (forks);
-}
-
-static int	mutex_init(t_shared_data *data)
-{
-	if (pthread_mutex_init(&data->log_lock, NULL))
-		return (-1);
-	if (pthread_mutex_init(&data->terminate_lock, NULL))
-	{
-		pthread_mutex_destroy(&data->log_lock);
-		return (-1);
-	}
-	return (0);
-}
-
-static t_shared_data	*create_shared_data(t_philo_config *config)
-{
-	t_shared_data	*data;
-
-	data = malloc(sizeof(t_shared_data));
-	if (data == NULL)
-		return (NULL);
-	data->forks = create_forks(config);
-	if (!data->forks)
-	{
-		free(data);
-		return (NULL);
-	}
-	if (mutex_init(data))
-	{
-		free(data->forks);
-		free(data);
-		return (NULL);
-	}
-	data->config = config;
-	data->terminate = false;
-	gettimeofday(&data->start_time, NULL);
 	return (0);
 }
 
@@ -80,7 +42,6 @@ t_wisdom	*create_wisdoms(t_philo_config *config)
 {
 	t_shared_data	*data;
 	t_wisdom		*wisdoms;
-	unsigned int	i;
 
 	data = create_shared_data(config);
 	if (data == NULL)
@@ -91,14 +52,10 @@ t_wisdom	*create_wisdoms(t_philo_config *config)
 		destroy_shared_data(data);
 		return (NULL);
 	}
-	i = 0;
-	while (i < data->config->num_philos)
+	if (init_wisdoms(wisdoms, data))
 	{
-		wisdoms[i].id = i + 1;
-		wisdoms[i].eat_count = 0;
-		wisdoms[i].last_eat = data->start_time;
-		wisdoms[i].data = data;
-		i++;
+		destroy_wisdoms(wisdoms);
+		return (NULL);
 	}
 	return (wisdoms);
 }

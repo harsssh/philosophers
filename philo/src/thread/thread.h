@@ -32,6 +32,7 @@ typedef struct s_wisdom
 {
 	unsigned int	id;
 	struct timeval	last_eat;
+	pthread_mutex_t last_eat_lock;
 	unsigned int	eat_count;
 	t_shared_data	*data;
 }					t_wisdom;
@@ -42,5 +43,6 @@ pthread_t			*create_threads(t_wisdom *wisdoms);
 void				destroy_wisdoms(t_wisdom *wisdoms);
 
 void				*philo_routine(void *arg);
+void 				monitor_threads(t_wisdom *wisdoms);
 
 #endif
