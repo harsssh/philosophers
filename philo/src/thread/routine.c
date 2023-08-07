@@ -23,7 +23,7 @@ static void	philo_think(t_wisdom *wisdom)
 	left_fork = wisdom->data->forks + (wisdom->id - 1);
 	right_fork = wisdom->data->forks + wisdom->id
 			% wisdom->data->config->num_philos;
-	if (wisdom->id == 0)
+	if (wisdom->id & 1)
 	{
 		pthread_mutex_lock(left_fork);
 		print_log(wisdom, MSG_TAKE_FORK);
