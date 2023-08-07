@@ -6,13 +6,69 @@
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:42:23 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/07 14:42:24 by kemizuki         ###   ########.fr       */
+/*   Updated: 2023/08/07 16:40:33 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "internal.h"
 #include "thread.h"
+#include <unistd.h>
+
+static void	hold_forks(t_wisdom *wisdom)
+{
+	pthread_mutex_t	left_fork;
+	pthread_mutex_t	right_fork;
+
+	left_fork = wisdom->data->forks[wisdom->id];
+	right_fork = wisdom->data->forks[(wisdom->id + 1)
+		% wisdom->data->config->num_philos];
+	if (wisdom->id == 0)
+	{
+		pthread_mutex_lock(&left_fork);
+		print_log(wisdom, MSG_TAKE_FORK);
+		pthread_mutex_lock(&right_fork);
+		print_log(wisdom, MSG_TAKE_FORK);
+	}
+	else
+	{
+		pthread_mutex_lock(&right_fork);
+		print_log(wisdom, MSG_TAKE_FORK);
+		pthread_mutex_lock(&left_fork);
+		print_log(wisdom, MSG_TAKE_FORK);
+	}
+}
+
+static void	philo_eat(t_wisdom *wisdom)
+{
+	++wisdom->eat_count;
+	gettimeofday(&wisdom->last_eat, NULL);
+	print_log(wisdom, MSG_EAT);
+	usleep(wisdom->data->config->sleep_time * 1000);
+}
+
+static void	philo_sleep(t_wisdom *wisdom)
+{
+	print_log(wisdom, MSG_SLEEP);
+	usleep(wisdom->data->config->sleep_time * 1000);
+}
 
 void	*philo_routine(void *arg)
 {
+	t_wisdom	*wisdom;
+
+	wisdom = (t_wisdom *)arg;
+	while (true)
+	{
+		pthread_mutex_lock(&wisdom->data->terminate_lock);
+		if (wisdom->data->terminate)
+		{
+			pthread_mutex_unlock(&wisdom->data->terminate_lock);
+			break ;
+		}
+		pthread_mutex_unlock(&wisdom->data->terminate_lock);
+		hold_forks(wisdom);
+		philo_eat(wisdom);
+		philo_sleep(wisdom);
+	}
 	return (NULL);
 }
