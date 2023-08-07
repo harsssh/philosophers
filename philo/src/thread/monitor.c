@@ -1,15 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   monitor.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/07 23:15:31 by kemizuki          #+#    #+#             */
+/*   Updated: 2023/08/07 23:15:32 by kemizuki         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "internal.h"
 #include "thread.h"
 #include "util/util.h"
-#include "internal.h"
 #include <unistd.h>
 
 #define DELAY 5000
 
-void monitor_threads(t_wisdom *wisdoms)
+void	monitor_threads(t_wisdom *wisdoms)
 {
-	struct timeval now;
-	unsigned int die_time;
-	unsigned int i;
+	struct timeval	now;
+	unsigned int	die_time;
+	unsigned int	i;
 
 	die_time = wisdoms->data->config->die_time;
 	while (true)
@@ -28,6 +40,7 @@ void monitor_threads(t_wisdom *wisdoms)
 				return ;
 			}
 			pthread_mutex_unlock(&wisdoms[i].last_eat_lock);
+			++i;
 		}
 		usleep(DELAY);
 	}
