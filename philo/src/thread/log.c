@@ -11,20 +11,16 @@
 /* ************************************************************************** */
 
 #include "thread.h"
+#include "util/util.h"
 #include <stdint.h>
 #include <stdio.h>
-#include <sys/time.h>
 
 static int64_t	get_timestamp(t_wisdom *wisdom)
 {
 	struct timeval	now;
-	int64_t			sec;
-	int64_t			usec;
 
 	gettimeofday(&now, NULL);
-	sec = now.tv_sec - wisdom->data->start_time.tv_sec;
-	usec = now.tv_usec - wisdom->data->start_time.tv_usec;
-	return (sec * 1000 + usec / 1000);
+	return (difftimeval(wisdom->data->start_time, now));
 }
 
 void	print_log(t_wisdom *wisdom, const char *format)
