@@ -26,7 +26,10 @@ static t_wisdom	*create_thread_data(int argc, char **argv)
 
 	config = parse_args(argc, argv);
 	if (config == NULL)
+	{
+		print_error(USAGE);
 		return (NULL);
+	}
 	wisdoms = create_wisdoms(config);
 	if (wisdoms == NULL)
 	{
