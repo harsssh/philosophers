@@ -11,22 +11,29 @@
 /* ************************************************************************** */
 
 #include "args/args.h"
-#include "stddef.h"
 #include "error/error.h"
-#include <stdio.h>
-
-#define EXIT_SUCCESS 0
-#define EXIT_FAILURE 1
+#include "thread/thread.h"
+#include <stdlib.h>
+#include <pthread.h>
 
 int	main(int argc, char **argv)
 {
 	t_philo_config	*config;
+	t_shared_data 	data;
+	t_wisdom		*wisdoms;
+	pthread_t 		*philos;
 
 	config = parse_args(argc, argv);
 	if (config == NULL)
 	{
+		free(config);
 		print_error(USAGE);
-		return (EXIT_FAILURE);
+		return (1);
 	}
-	return (EXIT_SUCCESS);
+	if (init_shared_data(&data, config))
+	{
+		free(config);
+		return (1);
+	}
+	return (0);
 }
