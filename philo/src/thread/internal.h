@@ -1,30 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   args.h                                             :+:      :+:    :+:   */
+/*   internal.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/03 17:56:54 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/07 14:43:31 by kemizuki         ###   ########.fr       */
+/*   Created: 2023/08/07 14:43:44 by kemizuki          #+#    #+#             */
+/*   Updated: 2023/08/07 14:43:45 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ARGS_H
-# define ARGS_H
+#ifndef INTERNAL_H
+# define INTERNAL_H
 
-# include "stdbool.h"
+# include "thread.h"
 
-typedef struct s_philo_config
-{
-	unsigned int	num_philos;
-	unsigned int	die_time;
-	unsigned int	eat_time;
-	unsigned int	sleep_time;
-	unsigned int	min_eat_count;
-	bool			has_optional_arg;
-}					t_philo_config;
-
-t_philo_config		*parse_args(int argc, char **argv);
+void	destroy_shared_data(t_shared_data *data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 09:15:07 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/05 18:56:00 by kemizuki         ###   ########.fr       */
+/*   Updated: 2023/08/07 14:43:25 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,16 @@ static int	set_config(t_philo_config *args, int argc, char **argv)
 	return (0);
 }
 
-int parse_args(t_philo_config *config, int argc, char **argv)
+t_philo_config	*parse_args(int argc, char **argv)
 {
+	t_philo_config	*config;
+
+	config = malloc(sizeof(t_philo_config));
+	if (config == NULL)
+		return (NULL);
 	if (!is_valid_args(argc, argv))
-		return (-1);
+		return (NULL);
 	if (set_config(config, argc, argv) == -1)
-		return (-1);
-	return (0);
+		return (NULL);
+	return (config);
 }

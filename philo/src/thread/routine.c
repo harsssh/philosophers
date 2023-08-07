@@ -1,30 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   args.h                                             :+:      :+:    :+:   */
+/*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/03 17:56:54 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/07 14:43:31 by kemizuki         ###   ########.fr       */
+/*   Created: 2023/08/07 14:42:23 by kemizuki          #+#    #+#             */
+/*   Updated: 2023/08/07 14:42:24 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ARGS_H
-# define ARGS_H
+#include "thread.h"
 
-# include "stdbool.h"
-
-typedef struct s_philo_config
+void	*philo_routine(void *arg)
 {
-	unsigned int	num_philos;
-	unsigned int	die_time;
-	unsigned int	eat_time;
-	unsigned int	sleep_time;
-	unsigned int	min_eat_count;
-	bool			has_optional_arg;
-}					t_philo_config;
-
-t_philo_config		*parse_args(int argc, char **argv);
-
-#endif
+	return (NULL);
+}

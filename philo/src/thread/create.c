@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   create.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 19:04:03 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/05 19:40:00 by kemizuki         ###   ########.fr       */
+/*   Updated: 2023/08/07 14:43:54 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "args/args.h"
+#include "internal.h"
 #include "thread.h"
-#include "util/util.h"
 #include <pthread.h>
 #include <stdlib.h>
 
-static pthread_mutex_t *create_forks(t_philo_config *config)
+static pthread_mutex_t	*create_forks(t_philo_config *config)
 {
 	pthread_mutex_t	*forks;
 	unsigned int	i;
@@ -39,29 +39,45 @@ static pthread_mutex_t *create_forks(t_philo_config *config)
 	return (forks);
 }
 
-int 	init_shared_data(t_shared_data *data, t_philo_config *config)
+static t_shared_data	*create_shared_data(t_philo_config *config)
 {
+	t_shared_data	*data;
+
+	data = malloc(sizeof(t_shared_data));
+	if (data == NULL)
+		return (NULL);
 	data->forks = create_forks(config);
 	if (!data->forks)
-		return (-1);
+	{
+		free(data);
+		return (NULL);
+	}
 	if (pthread_mutex_init(&data->log_lock, NULL))
 	{
 		free(data->forks);
-		return (-1);
+		free(data);
+		return (NULL);
 	}
 	data->config = config;
 	gettimeofday(&data->start_time, NULL);
 	return (0);
 }
 
-static t_wisdom *create_wisdoms(t_shared_data *data)
+t_wisdom	*create_wisdoms(t_philo_config *config)
 {
-	t_wisdom *wisdoms;
-	unsigned int i;
+	t_shared_data	*data;
+	t_wisdom		*wisdoms;
+	unsigned int	i;
 
+	data = create_shared_data(config);
+	if (data == NULL)
+		return (NULL);
 	wisdoms = malloc(sizeof(t_wisdom) * data->config->num_philos);
 	if (wisdoms == NULL)
+	{
+		destroy_shared_data(data);
 		return (NULL);
+	}
 	i = 0;
 	while (i < data->config->num_philos)
 	{
@@ -74,23 +90,19 @@ static t_wisdom *create_wisdoms(t_shared_data *data)
 	return (wisdoms);
 }
 
-
-pthread_t	*create_threads(t_shared_data *data)
+pthread_t	*create_threads(t_wisdom *wisdoms)
 {
-	t_wisdom *all_wisdom;
-	pthread_t *philos;
-	unsigned int i;
+	pthread_t		*philos;
+	unsigned int	i;
 
-	all_wisdom = create_wisdoms(data);
-	if (all_wisdom == NULL)
-		return (NULL);
-	philos = malloc(sizeof(pthread_t) * data->config->num_philos);
+	philos = malloc(sizeof(pthread_t) * wisdoms->data->config->num_philos);
 	if (philos == NULL)
-	{
-		free(all_wisdom);
 		return (NULL);
-	}
 	i = 0;
-	while (i < data->config->num_philos)
-		;
+	while (i < wisdoms->data->config->num_philos)
+	{
+		// TODO: handle error
+		pthread_create(philos + i, NULL, philo_routine, wisdoms + i);
+	}
+	return (philos);
 }

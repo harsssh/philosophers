@@ -1,30 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   args.h                                             :+:      :+:    :+:   */
+/*   destroy.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/03 17:56:54 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/07 14:43:31 by kemizuki         ###   ########.fr       */
+/*   Created: 2023/08/07 14:43:38 by kemizuki          #+#    #+#             */
+/*   Updated: 2023/08/07 14:43:39 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ARGS_H
-# define ARGS_H
+#include "thread.h"
+#include <stdlib.h>
 
-# include "stdbool.h"
-
-typedef struct s_philo_config
+void	destroy_shared_data(t_shared_data *data)
 {
-	unsigned int	num_philos;
-	unsigned int	die_time;
-	unsigned int	eat_time;
-	unsigned int	sleep_time;
-	unsigned int	min_eat_count;
-	bool			has_optional_arg;
-}					t_philo_config;
+	unsigned int	i;
 
-t_philo_config		*parse_args(int argc, char **argv);
+	i = 0;
+	while (i < data->config->num_philos)
+		pthread_mutex_destroy(&data->forks[i++]);
+	free(data->forks);
+	pthread_mutex_destroy(&data->log_lock);
+	free(data->config);
+}
 
-#endif
+void	destroy_wisdoms(t_wisdom *wisdoms)
+{
+	destroy_shared_data(wisdoms->data);
+	free(wisdoms);
+}
