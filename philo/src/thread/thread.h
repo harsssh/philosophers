@@ -6,7 +6,7 @@
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 18:56:16 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/07 14:43:04 by kemizuki         ###   ########.fr       */
+/*   Updated: 2023/08/07 15:32:33 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "args/args.h"
 # include <pthread.h>
+# include <stdbool.h>
 # include <sys/time.h>
 
 typedef struct s_shared_data
@@ -22,6 +23,8 @@ typedef struct s_shared_data
 	t_philo_config	*config;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	log_lock;
+	bool			terminate;
+	pthread_mutex_t	terminate_lock;
 	struct timeval	start_time;
 }					t_shared_data;
 

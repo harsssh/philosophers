@@ -6,7 +6,7 @@
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 19:04:03 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/07 14:43:54 by kemizuki         ###   ########.fr       */
+/*   Updated: 2023/08/07 15:32:28 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,18 @@ static pthread_mutex_t	*create_forks(t_philo_config *config)
 	return (forks);
 }
 
+static int	mutex_init(t_shared_data *data)
+{
+	if (pthread_mutex_init(&data->log_lock, NULL))
+		return (-1);
+	if (pthread_mutex_init(&data->terminate_lock, NULL))
+	{
+		pthread_mutex_destroy(&data->log_lock);
+		return (-1);
+	}
+	return (0);
+}
+
 static t_shared_data	*create_shared_data(t_philo_config *config)
 {
 	t_shared_data	*data;
@@ -52,13 +64,14 @@ static t_shared_data	*create_shared_data(t_philo_config *config)
 		free(data);
 		return (NULL);
 	}
-	if (pthread_mutex_init(&data->log_lock, NULL))
+	if (mutex_init(data))
 	{
 		free(data->forks);
 		free(data);
 		return (NULL);
 	}
 	data->config = config;
+	data->terminate = false;
 	gettimeofday(&data->start_time, NULL);
 	return (0);
 }
@@ -101,8 +114,14 @@ pthread_t	*create_threads(t_wisdom *wisdoms)
 	i = 0;
 	while (i < wisdoms->data->config->num_philos)
 	{
-		// TODO: handle error
-		pthread_create(philos + i, NULL, philo_routine, wisdoms + i);
+		if (pthread_create(philos + i, NULL, philo_routine, wisdoms + i))
+		{
+			pthread_mutex_lock(&wisdoms->data->terminate_lock);
+			wisdoms->data->terminate = true;
+			pthread_mutex_unlock(&wisdoms->data->terminate_lock);
+			free(philos);
+			return (NULL);
+		}
 	}
 	return (philos);
 }
