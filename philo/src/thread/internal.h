@@ -6,7 +6,7 @@
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:43:44 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/07 16:41:14 by kemizuki         ###   ########.fr       */
+/*   Updated: 2023/08/08 00:21:35 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define MSG_DIE "%llu %u died\n"
 
 t_shared_data	*create_shared_data(t_philo_config *config);
-void	destroy_shared_data(t_shared_data *data);
-void	print_log(t_wisdom *wisdom, const char *format);
+void			destroy_shared_data(t_shared_data *data);
+void			print_log(t_wisdom *wisdom, const char *format);
 
 #endif

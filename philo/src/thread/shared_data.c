@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shared_data.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/08 00:21:57 by kemizuki          #+#    #+#             */
+/*   Updated: 2023/08/08 00:21:58 by kemizuki         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "thread.h"
 #include <pthread.h>
 #include <stdlib.h>
-#include "thread.h"
 
 static pthread_mutex_t	*create_forks(t_philo_config *config)
 {

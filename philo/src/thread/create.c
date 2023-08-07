@@ -6,7 +6,7 @@
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 19:04:03 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/07 15:32:28 by kemizuki         ###   ########.fr       */
+/*   Updated: 2023/08/08 00:21:25 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,39 @@
 #include <pthread.h>
 #include <stdlib.h>
 
-static int init_wisdoms(t_wisdom *wisdoms, t_shared_data *data)
+static int	wisdom_mutex_init(t_wisdom *wisdom)
 {
-	unsigned int i;
+	if (pthread_mutex_init(&wisdom->eat_count_lock, NULL))
+		return (-1);
+	if (pthread_mutex_init(&wisdom->last_eat_lock, NULL))
+	{
+		pthread_mutex_destroy(&wisdom->eat_count_lock);
+		return (-1);
+	}
+	return (0);
+}
+
+static int	init_wisdoms(t_wisdom *wisdoms, t_shared_data *data)
+{
+	unsigned int	i;
 
 	i = 0;
 	while (i < data->config->num_philos)
 	{
-		if (pthread_mutex_init(&wisdoms[i].last_eat_lock, NULL))
+		if (wisdom_mutex_init(wisdoms + i))
 		{
 			while (i--)
+			{
+				pthread_mutex_destroy(&wisdoms[i].eat_count_lock);
 				pthread_mutex_destroy(&wisdoms[i].last_eat_lock);
+			}
 			return (-1);
 		}
 		wisdoms[i].id = i + 1;
 		wisdoms[i].eat_count = 0;
 		wisdoms[i].last_eat = data->start_time;
 		wisdoms[i].data = data;
-		i++;
+		++i;
 	}
 	return (0);
 }
