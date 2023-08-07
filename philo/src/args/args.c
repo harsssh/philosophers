@@ -87,8 +87,20 @@ t_philo_config	*parse_args(int argc, char **argv)
 	if (config == NULL)
 		return (NULL);
 	if (!is_valid_args(argc, argv))
+	{
+		free(config);
 		return (NULL);
-	if (set_config(config, argc, argv) == -1)
+	}
+	if (set_config(config, argc, argv))
+	{
+		free(config);
 		return (NULL);
+	}
+	if (config->num_philos == 0)
+	{
+		print_colored_error(E_ZERO_PHILO);
+		free(config);
+		return (NULL);
+	}
 	return (config);
 }
