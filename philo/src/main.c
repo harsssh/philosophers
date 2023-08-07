@@ -50,5 +50,8 @@ int	main(int argc, char **argv)
 		destroy_wisdoms(wisdoms);
 		return (EXIT_FAILURE);
 	}
+	monitor_threads(wisdoms);
+	wait_threads(philos, wisdoms->data->config->num_philos);
+	destroy_wisdoms(wisdoms);
 	return (EXIT_SUCCESS);
 }

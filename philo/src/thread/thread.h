@@ -44,5 +44,6 @@ void				destroy_wisdoms(t_wisdom *wisdoms);
 
 void				*philo_routine(void *arg);
 void 				monitor_threads(t_wisdom *wisdoms);
+void 				wait_threads(pthread_t *philos, unsigned int num_philos);
 
 #endif
