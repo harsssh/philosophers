@@ -44,6 +44,9 @@ static void	philo_eat(t_wisdom *wisdom)
 	gettimeofday(&wisdom->last_eat, NULL);
 	print_log(wisdom, MSG_EAT);
 	usleep(wisdom->data->config->sleep_time * 1000);
+	pthread_mutex_unlock(&wisdom->data->forks[wisdom->id]);
+	pthread_mutex_unlock(&wisdom->data->forks[(wisdom->id + 1)
+		% wisdom->data->config->num_philos]);
 }
 
 static void	philo_sleep(t_wisdom *wisdom)

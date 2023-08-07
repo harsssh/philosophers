@@ -79,6 +79,7 @@ pthread_t	*create_threads(t_wisdom *wisdoms)
 			free(philos);
 			return (NULL);
 		}
+		++i;
 	}
 	return (philos);
 }

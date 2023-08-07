@@ -45,7 +45,7 @@ t_shared_data	*create_shared_data(t_philo_config *config)
 	if (data == NULL)
 		return (NULL);
 	data->forks = create_forks(config);
-	if (!data->forks)
+	if (data->forks == NULL)
 	{
 		free(data);
 		return (NULL);
@@ -59,5 +59,5 @@ t_shared_data	*create_shared_data(t_philo_config *config)
 	data->config = config;
 	data->terminate = false;
 	gettimeofday(&data->start_time, NULL);
-	return (0);
+	return (data);
 }
