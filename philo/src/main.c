@@ -13,27 +13,21 @@
 #include "args/args.h"
 #include "error/error.h"
 #include "thread/thread.h"
-#include <stdlib.h>
 #include <pthread.h>
 
 int	main(int argc, char **argv)
 {
-	t_philo_config	*config;
+	t_philo_config	config;
 	t_shared_data 	data;
 	t_wisdom		*wisdoms;
 	pthread_t 		*philos;
 
-	config = parse_args(argc, argv);
-	if (config == NULL)
+	if (parse_args(&config, argc, argv))
 	{
-		free(config);
 		print_error(USAGE);
 		return (1);
 	}
-	if (init_shared_data(&data, config))
-	{
-		free(config);
+	if (init_shared_data(&data, &config))
 		return (1);
-	}
 	return (0);
 }

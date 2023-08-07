@@ -50,7 +50,7 @@ static bool	is_valid_args(int argc, char **argv)
 	return (true);
 }
 
-static int	set_args(t_philo_config *args, int argc, char **argv)
+static int	set_config(t_philo_config *args, int argc, char **argv)
 {
 	unsigned int	*dest[5];
 	unsigned int	i;
@@ -79,22 +79,11 @@ static int	set_args(t_philo_config *args, int argc, char **argv)
 	return (0);
 }
 
-t_philo_config	*parse_args(int argc, char **argv)
+int parse_args(t_philo_config *config, int argc, char **argv)
 {
-	t_philo_config	*args;
-
-	args = malloc(sizeof(t_philo_config));
-	if (args == NULL)
-		return (NULL);
 	if (!is_valid_args(argc, argv))
-	{
-		free(args);
-		return (NULL);
-	}
-	if (set_args(args, argc, argv) == -1)
-	{
-		free(args);
-		return (NULL);
-	}
-	return (args);
+		return (-1);
+	if (set_config(config, argc, argv) == -1)
+		return (-1);
+	return (0);
 }
