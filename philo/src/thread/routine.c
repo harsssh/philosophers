@@ -13,7 +13,6 @@
 #include "internal.h"
 #include "thread.h"
 #include "util/util.h"
-#include <unistd.h>
 
 static void	philo_think(t_wisdom *wisdom)
 {
@@ -31,7 +30,7 @@ static void	philo_think(t_wisdom *wisdom)
 	if (wisdom->data->config->num_philos == 1)
 	{
 		pthread_mutex_unlock(second_fork);
-		usleep(wisdom->data->config->die_time * 2 * 1000);
+		msleep(wisdom->data->config->die_time * 2);
 		return ;
 	}
 	pthread_mutex_lock(first_fork);
@@ -45,7 +44,7 @@ static void	philo_eat(t_wisdom *wisdom)
 	pthread_mutex_unlock(&wisdom->eat_count_lock);
 	gettimeofday(&wisdom->last_eat, NULL);
 	print_log(wisdom, MSG_EAT);
-	usleep(wisdom->data->config->eat_time * 1000);
+	msleep(wisdom->data->config->eat_time);
 	pthread_mutex_unlock(wisdom->data->forks + (wisdom->id - 1));
 	pthread_mutex_unlock(wisdom->data->forks + wisdom->id
 		% wisdom->data->config->num_philos);
@@ -54,7 +53,7 @@ static void	philo_eat(t_wisdom *wisdom)
 static void	philo_sleep(t_wisdom *wisdom)
 {
 	print_log(wisdom, MSG_SLEEP);
-	usleep(wisdom->data->config->sleep_time * 1000);
+	msleep(wisdom->data->config->sleep_time);
 }
 
 void	*philo_routine(void *arg)
