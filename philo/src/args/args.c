@@ -6,7 +6,7 @@
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 09:15:07 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/08 11:29:17 by kemizuki         ###   ########.fr       */
+/*   Updated: 2023/08/08 22:42:07 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,10 @@ static int	set_config(t_philo_config *args, int argc, char **argv)
 	return (PARSE_SUCCESS);
 }
 
-int parse_args(t_philo_config *config, int argc, char **argv)
+int	parse_args(t_philo_config *config, int argc, char **argv)
 {
-	if (!is_valid_args(argc, argv) || set_config(config, argc, argv) == PARSE_ERROR)
+	if (!is_valid_args(argc, argv) || set_config(config, argc,
+			argv) == PARSE_ERROR)
 	{
 		print_error(USAGE);
 		return (PARSE_ERROR);

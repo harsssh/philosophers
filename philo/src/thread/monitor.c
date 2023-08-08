@@ -6,7 +6,7 @@
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 23:15:31 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/08 00:21:49 by kemizuki         ###   ########.fr       */
+/*   Updated: 2023/08/08 22:42:43 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 static bool	is_satisfied(t_wisdom *wisdom);
 static bool	is_dead(t_wisdom *wisdom);
 static void	notify_termination(t_shared_data *data);
-static int	monitor_each_thread(t_wisdom *wisdoms, unsigned int *satisfied_philos);
+static int	monitor_each_thread(t_wisdom *wisdoms,
+				unsigned int *satisfied_philos);
 
 void	monitor_threads(t_wisdom *wisdoms)
 {
@@ -71,7 +72,7 @@ static void	notify_termination(t_shared_data *data)
 }
 
 static int	monitor_each_thread(t_wisdom *wisdoms,
-		unsigned int *satisfied_philos)
+								unsigned int *satisfied_philos)
 {
 	unsigned int	i;
 

@@ -6,7 +6,7 @@
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 09:55:49 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/08 00:48:39 by kemizuki         ###   ########.fr       */
+/*   Updated: 2023/08/08 22:39:26 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ time_to_die time_to_eat time_to_sleep \
 # define E_NON_NUMERIC_ARG	"Error: non-numeric argument\n"
 # define E_TOO_LARGE_ARG	"Error: too large argument\n"
 # define E_ZERO_ARG			"Error: each argument must be positive\n"
-
 
 void	print_error(const char *message);
 void	print_colored_error(const char *message);

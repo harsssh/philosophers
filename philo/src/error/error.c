@@ -6,7 +6,7 @@
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 09:59:12 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/05 11:09:23 by kemizuki         ###   ########.fr       */
+/*   Updated: 2023/08/08 22:39:42 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 #include "minilibft/minilibft.h"
 #include <unistd.h>
 
-# define RED_COLOR "\x1B[31m"
-# define RESET_COLOR "\x1B[0m"
+#define RED_COLOR "\x1B[31m"
+#define RESET_COLOR "\x1B[0m"
 
 void	print_error(const char *message)
 {

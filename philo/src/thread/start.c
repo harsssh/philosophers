@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create.c                                           :+:      :+:    :+:   */
+/*   start.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 19:04:03 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/08 00:21:25 by kemizuki         ###   ########.fr       */
+/*   Updated: 2023/08/08 22:39:53 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ static t_shared_data	*create_shared_data(t_philo_config config);
 static int				init_wisdoms(t_wisdom *wisdoms, t_shared_data *data);
 static t_wisdom			*create_wisdoms(t_philo_config config);
 
-int		start_dinner(t_dinner *dinner, t_philo_config config)
+int	start_dinner(t_dinner *dinner, t_philo_config config)
 {
 	unsigned int	i;
-	t_shared_data 	*data;
+	t_shared_data	*data;
 
 	dinner->wisdoms = create_wisdoms(config);
 	if (dinner->wisdoms == NULL)
@@ -38,7 +38,8 @@ int		start_dinner(t_dinner *dinner, t_philo_config config)
 	data = dinner->wisdoms->data;
 	while (i < config.num_philos)
 	{
-		if (pthread_create(dinner->philos + i, NULL, philo_routine, dinner->wisdoms + i))
+		if (pthread_create(dinner->philos + i, NULL, philo_routine,
+				dinner->wisdoms + i))
 		{
 			pthread_mutex_lock(&data->lock);
 			data->terminate = true;

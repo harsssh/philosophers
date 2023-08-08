@@ -6,7 +6,7 @@
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 18:56:16 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/08 00:21:16 by kemizuki         ###   ########.fr       */
+/*   Updated: 2023/08/08 22:41:02 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@
 # define MSG_THINK		"%llu %u is thinking\n"
 # define MSG_DIE		"%llu %u died\n"
 
-# define INIT_FAILURE	-1
-# define INIT_SUCCESS	0
+# define INIT_FAILURE -1
+# define INIT_SUCCESS 0
 
 typedef struct s_shared_data
 {
-	pthread_mutex_t lock;
+	pthread_mutex_t	lock;
 	t_philo_config	config;
 	pthread_mutex_t	*forks;
 	bool			terminate;
@@ -38,7 +38,7 @@ typedef struct s_shared_data
 
 typedef struct s_wisdom
 {
-	pthread_mutex_t lock;
+	pthread_mutex_t	lock;
 	unsigned int	id;
 	struct timeval	last_eat;
 	unsigned int	eat_count;
@@ -47,27 +47,27 @@ typedef struct s_wisdom
 
 typedef struct s_dinner
 {
-	pthread_t 		*philos;
+	pthread_t		*philos;
 	t_wisdom		*wisdoms;
-} 					t_dinner;
+}					t_dinner;
 
 // destroy.c
-void		destroy_wisdoms(t_wisdom *wisdoms);
-void		destroy_shared_data(t_shared_data *data);
+void	destroy_wisdoms(t_wisdom *wisdoms);
+void	destroy_shared_data(t_shared_data *data);
 
 // start.c
-int			start_dinner(t_dinner *dinner, t_philo_config config);
+int		start_dinner(t_dinner *dinner, t_philo_config config);
 
 // log.c
-void		print_log(t_wisdom *wisdom, const char *format);
+void	print_log(t_wisdom *wisdom, const char *format);
 
 // routine.c
-void		*philo_routine(void *arg);
+void	*philo_routine(void *arg);
 
 // monitor.c
-void		monitor_threads(t_wisdom *wisdoms);
+void	monitor_threads(t_wisdom *wisdoms);
 
 // wait.c
-void		wait_dinner_end(t_dinner dinner, unsigned int num_philos);
+void	wait_dinner_end(t_dinner dinner, unsigned int num_philos);
 
 #endif
