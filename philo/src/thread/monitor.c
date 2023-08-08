@@ -22,7 +22,7 @@ static bool	is_satisfied(t_wisdom *wisdom)
 	bool	satisfied;
 
 	pthread_mutex_lock(&wisdom->eat_count_lock);
-	satisfied = wisdom->eat_count >= wisdom->data->config->min_eat_count;
+	satisfied = wisdom->eat_count >= wisdom->data->config.min_eat_count;
 	pthread_mutex_unlock(&wisdom->eat_count_lock);
 	return (satisfied);
 }
@@ -34,7 +34,7 @@ static bool	is_dead(t_wisdom *wisdom)
 
 	gettimeofday(&now, NULL);
 	pthread_mutex_lock(&wisdom->last_eat_lock);
-	dead = difftimeval(wisdom->last_eat, now) >= wisdom->data->config->die_time;
+	dead = difftimeval(wisdom->last_eat, now) >= wisdom->data->config.die_time;
 	pthread_mutex_unlock(&wisdom->last_eat_lock);
 	return (dead);
 }
@@ -52,7 +52,7 @@ static int	monitor_each_thread(t_wisdom *wisdoms,
 	unsigned int	i;
 
 	i = 0;
-	while (i < wisdoms->data->config->num_philos)
+	while (i < wisdoms->data->config.num_philos)
 	{
 		if (is_satisfied(wisdoms + i))
 			++(*satisfied_philos);
@@ -69,7 +69,7 @@ static int	monitor_each_thread(t_wisdom *wisdoms,
 
 void	monitor_threads(t_wisdom *wisdoms)
 {
-	t_philo_config	*config;
+	t_philo_config	config;
 	unsigned int	satisfied_philos;
 
 	config = wisdoms->data->config;
@@ -78,7 +78,7 @@ void	monitor_threads(t_wisdom *wisdoms)
 		satisfied_philos = 0;
 		if (monitor_each_thread(wisdoms, &satisfied_philos))
 			return ;
-		if (config->has_optional_arg && satisfied_philos == config->num_philos)
+		if (config.has_optional_arg && satisfied_philos == config.num_philos)
 		{
 			notify_termination(wisdoms->data);
 			return ;

@@ -33,7 +33,7 @@ static int	init_wisdoms(t_wisdom *wisdoms, t_shared_data *data)
 	unsigned int	i;
 
 	i = 0;
-	while (i < data->config->num_philos)
+	while (i < data->config.num_philos)
 	{
 		if (wisdom_mutex_init(wisdoms + i))
 		{
@@ -53,7 +53,7 @@ static int	init_wisdoms(t_wisdom *wisdoms, t_shared_data *data)
 	return (0);
 }
 
-t_wisdom	*create_wisdoms(t_philo_config *config)
+t_wisdom	*create_wisdoms(t_philo_config config)
 {
 	t_shared_data	*data;
 	t_wisdom		*wisdoms;
@@ -61,7 +61,7 @@ t_wisdom	*create_wisdoms(t_philo_config *config)
 	data = create_shared_data(config);
 	if (data == NULL)
 		return (NULL);
-	wisdoms = malloc(sizeof(t_wisdom) * data->config->num_philos);
+	wisdoms = malloc(sizeof(t_wisdom) * data->config.num_philos);
 	if (wisdoms == NULL)
 	{
 		destroy_shared_data(data);
@@ -80,11 +80,11 @@ pthread_t	*create_threads(t_wisdom *wisdoms)
 	pthread_t		*philos;
 	unsigned int	i;
 
-	philos = malloc(sizeof(pthread_t) * wisdoms->data->config->num_philos);
+	philos = malloc(sizeof(pthread_t) * wisdoms->data->config.num_philos);
 	if (philos == NULL)
 		return (NULL);
 	i = 0;
-	while (i < wisdoms->data->config->num_philos)
+	while (i < wisdoms->data->config.num_philos)
 	{
 		if (pthread_create(philos + i, NULL, philo_routine, wisdoms + i))
 		{

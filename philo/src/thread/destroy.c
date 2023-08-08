@@ -19,7 +19,7 @@ void	destroy_wisdoms(t_wisdom *wisdoms)
 	unsigned int	i;
 
 	i = 0;
-	while (i < wisdoms->data->config->num_philos)
+	while (i < wisdoms->data->config.num_philos)
 	{
 		pthread_mutex_destroy(&wisdoms[i].last_eat_lock);
 		pthread_mutex_destroy(&wisdoms[i].eat_count_lock);

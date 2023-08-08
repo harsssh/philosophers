@@ -20,7 +20,7 @@
 
 typedef struct s_shared_data
 {
-	t_philo_config	*config;
+	t_philo_config	config;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	log_lock;
 	bool			terminate;
@@ -38,7 +38,7 @@ typedef struct s_wisdom
 	t_shared_data	*data;
 }					t_wisdom;
 
-t_wisdom			*create_wisdoms(t_philo_config *config);
+t_wisdom			*create_wisdoms(t_philo_config config);
 pthread_t			*create_threads(t_wisdom *wisdoms);
 
 void				destroy_wisdoms(t_wisdom *wisdoms);

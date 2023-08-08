@@ -16,35 +16,15 @@
 #include <pthread.h>
 #include <stdlib.h>
 
-#define EXIT_SUCCESS 0
-#define EXIT_FAILURE 1
-
-static t_wisdom	*create_thread_data(int argc, char **argv)
-{
-	t_philo_config	*config;
-	t_wisdom		*wisdoms;
-
-	config = parse_args(argc, argv);
-	if (config == NULL)
-	{
-		print_error(USAGE);
-		return (NULL);
-	}
-	wisdoms = create_wisdoms(config);
-	if (wisdoms == NULL)
-	{
-		free(config);
-		return (NULL);
-	}
-	return (wisdoms);
-}
-
 int	main(int argc, char **argv)
 {
+	t_philo_config config;
 	t_wisdom	*wisdoms;
 	pthread_t	*philos;
 
-	wisdoms = create_thread_data(argc, argv);
+	if (parse_args(&config, argc, argv) == PARSE_ERROR)
+		return (EXIT_FAILURE);
+	wisdoms = create_wisdoms(config);
 	if (wisdoms == NULL)
 		return (EXIT_FAILURE);
 	philos = create_threads(wisdoms);
@@ -54,7 +34,7 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	monitor_threads(wisdoms);
-	wait_threads(philos, wisdoms->data->config->num_philos);
+	wait_threads(philos, wisdoms->data->config.num_philos);
 	destroy_wisdoms(wisdoms);
 	return (EXIT_SUCCESS);
 }

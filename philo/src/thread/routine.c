@@ -19,7 +19,7 @@ static void	choose_forks(t_wisdom *wisdom, pthread_mutex_t **first_fork,
 {
 	*first_fork = wisdom->data->forks + (wisdom->id - 1);
 	*second_fork = wisdom->data->forks + wisdom->id
-		% wisdom->data->config->num_philos;
+		% wisdom->data->config.num_philos;
 	if (wisdom->id == 1)
 		swap_pointer((void **)first_fork, (void **)second_fork);
 }
@@ -37,17 +37,17 @@ static void	philo_eat(t_wisdom *wisdom)
 
 	choose_forks(wisdom, &first_fork, &second_fork);
 	take_fork(wisdom, first_fork);
-	if (wisdom->data->config->num_philos == 1)
+	if (wisdom->data->config.num_philos == 1)
 	{
 		pthread_mutex_unlock(second_fork);
-		msleep(wisdom->data->config->die_time * 2);
+		msleep(wisdom->data->config.die_time * 2);
 		return ;
 	}
 	take_fork(wisdom, second_fork);
 	safe_increment_uint(&wisdom->eat_count, &wisdom->eat_count_lock);
 	safe_update_timeval(&wisdom->last_eat, &wisdom->last_eat_lock);
 	print_log(wisdom, MSG_EAT);
-	msleep(wisdom->data->config->eat_time);
+	msleep(wisdom->data->config.eat_time);
 	pthread_mutex_unlock(second_fork);
 	pthread_mutex_unlock(first_fork);
 }
@@ -55,7 +55,7 @@ static void	philo_eat(t_wisdom *wisdom)
 static void	philo_sleep(t_wisdom *wisdom)
 {
 	print_log(wisdom, MSG_SLEEP);
-	msleep(wisdom->data->config->sleep_time);
+	msleep(wisdom->data->config.sleep_time);
 }
 
 void	*philo_routine(void *arg)

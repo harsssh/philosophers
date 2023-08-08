@@ -16,7 +16,6 @@
 #include <errno.h>
 #include <limits.h>
 #include <stdbool.h>
-#include <stdlib.h>
 
 static bool	is_valid_number(const char *s)
 {
@@ -78,34 +77,24 @@ static int	set_config(t_philo_config *args, int argc, char **argv)
 		if (errno == ERANGE || *dest[i] > UINT_MAX)
 		{
 			print_colored_error(E_TOO_LARGE_ARG);
-			return (-1);
+			return (PARSE_ERROR);
 		}
 		else if (*dest[i] == 0)
 		{
 			print_colored_error(E_ZERO_ARG);
-			return (-1);
+			return (PARSE_ERROR);
 		}
 		++i;
 	}
-	return (0);
+	return (PARSE_SUCCESS);
 }
 
-t_philo_config	*parse_args(int argc, char **argv)
+int parse_args(t_philo_config *config, int argc, char **argv)
 {
-	t_philo_config	*config;
-
-	config = malloc(sizeof(t_philo_config));
-	if (config == NULL)
-		return (NULL);
-	if (!is_valid_args(argc, argv))
+	if (!is_valid_args(argc, argv) || set_config(config, argc, argv) == PARSE_ERROR)
 	{
-		free(config);
-		return (NULL);
+		print_error(USAGE);
+		return (PARSE_ERROR);
 	}
-	if (set_config(config, argc, argv))
-	{
-		free(config);
-		return (NULL);
-	}
-	return (config);
+	return (PARSE_SUCCESS);
 }

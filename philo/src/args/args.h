@@ -15,6 +15,9 @@
 
 # include "stdbool.h"
 
+# define PARSE_ERROR -1
+# define PARSE_SUCCESS 0
+
 typedef struct s_philo_config
 {
 	unsigned int	num_philos;
@@ -25,6 +28,6 @@ typedef struct s_philo_config
 	bool			has_optional_arg;
 }					t_philo_config;
 
-t_philo_config		*parse_args(int argc, char **argv);
+int parse_args(t_philo_config *config, int argc, char **argv);
 
 #endif

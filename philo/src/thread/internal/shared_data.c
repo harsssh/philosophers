@@ -14,16 +14,16 @@
 #include <pthread.h>
 #include <stdlib.h>
 
-static pthread_mutex_t	*create_forks(t_philo_config *config)
+static pthread_mutex_t	*create_forks(t_philo_config config)
 {
 	pthread_mutex_t	*forks;
 	unsigned int	i;
 
-	forks = malloc(sizeof(pthread_mutex_t) * config->num_philos);
+	forks = malloc(sizeof(pthread_mutex_t) * config.num_philos);
 	if (!forks)
 		return (NULL);
 	i = 0;
-	while (i < config->num_philos)
+	while (i < config.num_philos)
 	{
 		if (pthread_mutex_init(&forks[i], NULL))
 		{
@@ -49,7 +49,7 @@ static int	shared_data_mutex_init(t_shared_data *data)
 	return (0);
 }
 
-t_shared_data	*create_shared_data(t_philo_config *config)
+t_shared_data	*create_shared_data(t_philo_config config)
 {
 	t_shared_data	*data;
 
@@ -79,10 +79,9 @@ void	destroy_shared_data(t_shared_data *data)
 	unsigned int	i;
 
 	i = 0;
-	while (i < data->config->num_philos)
+	while (i < data->config.num_philos)
 		pthread_mutex_destroy(&data->forks[i++]);
 	free(data->forks);
 	pthread_mutex_destroy(&data->log_lock);
 	pthread_mutex_destroy(&data->terminate_lock);
-	free(data->config);
 }
