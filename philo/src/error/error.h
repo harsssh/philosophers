@@ -22,6 +22,7 @@ time_to_die time_to_eat time_to_sleep \
 # define E_TOO_LARGE_ARG	"Error: too large argument\n"
 # define E_ZERO_ARG			"Error: each argument must be positive\n"
 
+
 void	print_error(const char *message);
 void	print_colored_error(const char *message);
 

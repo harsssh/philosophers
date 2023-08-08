@@ -12,7 +12,7 @@
 
 #include "args.h"
 #include "error/error.h"
-#include "internal.h"
+#include "minilibft/minilibft.h"
 #include <errno.h>
 #include <limits.h>
 #include <stdbool.h>

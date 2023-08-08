@@ -3,7 +3,7 @@ NAME:=philo
 SRC_DIR:=src
 BUILD_DIR:=build
 
-CFLAGS:=-g -fsanitize=thread -Wall -Wextra -Werror -Ilibft/include -Isrc
+CFLAGS:=-Wall -Wextra -Werror -Ilibft/include -Isrc
 DEPFLAGS=-MT $@ -MMD -MP -MF $(BUILD_DIR)/$*.d
 
 SRC:=$(shell find $(SRC_DIR) -name '*.c')

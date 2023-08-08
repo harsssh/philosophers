@@ -11,8 +11,11 @@
 /* ************************************************************************** */
 
 #include "error.h"
-#include "internal.h"
+#include "minilibft/minilibft.h"
 #include <unistd.h>
+
+# define RED_COLOR "\x1B[31m"
+# define RESET_COLOR "\x1B[0m"
 
 void	print_error(const char *message)
 {

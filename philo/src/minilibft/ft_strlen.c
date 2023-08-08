@@ -1,20 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   internal.h                                         :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/05 09:22:26 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/05 10:15:19 by kemizuki         ###   ########.fr       */
+/*   Created: 2023/08/05 10:01:39 by kemizuki          #+#    #+#             */
+/*   Updated: 2023/08/05 10:04:13 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef INTERNAL_H
-# define INTERNAL_H
+#include <stddef.h>
 
-int		ft_isspace(int c);
-int		ft_isdigit(int c);
-long	ft_atol(const char *str);
+size_t	ft_strlen(const char *s)
+{
+	size_t	n;
 
-#endif
+	n = 0;
+	while (s[n])
+		n++;
+	return (n);
+}
