@@ -44,8 +44,8 @@ static void	philo_eat(t_wisdom *wisdom)
 		return ;
 	}
 	take_fork(wisdom, second_fork);
-	safe_increment_uint(&wisdom->eat_count, &wisdom->eat_count_lock);
-	safe_update_timeval(&wisdom->last_eat, &wisdom->last_eat_lock);
+	safe_increment_uint(&wisdom->eat_count, &wisdom->lock);
+	safe_update_timeval(&wisdom->last_eat, &wisdom->lock);
 	print_log(wisdom, MSG_EAT);
 	msleep(wisdom->data->config.eat_time);
 	pthread_mutex_unlock(second_fork);

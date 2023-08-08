@@ -21,9 +21,9 @@ static bool	is_satisfied(t_wisdom *wisdom)
 {
 	bool	satisfied;
 
-	pthread_mutex_lock(&wisdom->eat_count_lock);
+	pthread_mutex_lock(&wisdom->lock);
 	satisfied = wisdom->eat_count >= wisdom->data->config.min_eat_count;
-	pthread_mutex_unlock(&wisdom->eat_count_lock);
+	pthread_mutex_unlock(&wisdom->lock);
 	return (satisfied);
 }
 
@@ -33,9 +33,9 @@ static bool	is_dead(t_wisdom *wisdom)
 	bool			dead;
 
 	gettimeofday(&now, NULL);
-	pthread_mutex_lock(&wisdom->last_eat_lock);
+	pthread_mutex_lock(&wisdom->lock);
 	dead = difftimeval(wisdom->last_eat, now) >= wisdom->data->config.die_time;
-	pthread_mutex_unlock(&wisdom->last_eat_lock);
+	pthread_mutex_unlock(&wisdom->lock);
 	return (dead);
 }
 

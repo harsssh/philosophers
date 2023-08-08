@@ -31,10 +31,9 @@ typedef struct s_shared_data
 typedef struct s_wisdom
 {
 	unsigned int	id;
+	pthread_mutex_t lock;
 	struct timeval	last_eat;
-	pthread_mutex_t	last_eat_lock;
 	unsigned int	eat_count;
-	pthread_mutex_t	eat_count_lock;
 	t_shared_data	*data;
 }					t_wisdom;
 

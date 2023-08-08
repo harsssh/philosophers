@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "args/args.h"
-#include "error/error.h"
 #include "thread/thread.h"
 #include <pthread.h>
 #include <stdlib.h>

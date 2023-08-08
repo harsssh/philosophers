@@ -16,18 +16,6 @@
 #include <pthread.h>
 #include <stdlib.h>
 
-static int	wisdom_mutex_init(t_wisdom *wisdom)
-{
-	if (pthread_mutex_init(&wisdom->eat_count_lock, NULL))
-		return (-1);
-	if (pthread_mutex_init(&wisdom->last_eat_lock, NULL))
-	{
-		pthread_mutex_destroy(&wisdom->eat_count_lock);
-		return (-1);
-	}
-	return (0);
-}
-
 static int	init_wisdoms(t_wisdom *wisdoms, t_shared_data *data)
 {
 	unsigned int	i;
@@ -35,13 +23,10 @@ static int	init_wisdoms(t_wisdom *wisdoms, t_shared_data *data)
 	i = 0;
 	while (i < data->config.num_philos)
 	{
-		if (wisdom_mutex_init(wisdoms + i))
+		if (pthread_mutex_init(&wisdoms[i].lock, NULL))
 		{
 			while (i--)
-			{
-				pthread_mutex_destroy(&wisdoms[i].eat_count_lock);
-				pthread_mutex_destroy(&wisdoms[i].last_eat_lock);
-			}
+				pthread_mutex_destroy(&wisdoms[i].lock);
 			return (-1);
 		}
 		wisdoms[i].id = i + 1;
