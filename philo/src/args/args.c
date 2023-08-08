@@ -6,7 +6,7 @@
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 09:15:07 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/07 14:43:25 by kemizuki         ###   ########.fr       */
+/*   Updated: 2023/08/08 11:29:17 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,9 @@ static bool	is_valid_args(int argc, char **argv)
 	return (true);
 }
 
-static int	set_config(t_philo_config *args, int argc, char **argv)
+static void	init_set_config(t_philo_config *args, int argc,
+		unsigned int *dest[5])
 {
-	unsigned int	*dest[5];
-	unsigned int	i;
-
 	dest[0] = &args->num_philos;
 	dest[1] = &args->die_time;
 	dest[2] = &args->eat_time;
@@ -65,6 +63,14 @@ static int	set_config(t_philo_config *args, int argc, char **argv)
 		dest[4] = &args->min_eat_count;
 		args->has_optional_arg = true;
 	}
+}
+
+static int	set_config(t_philo_config *args, int argc, char **argv)
+{
+	unsigned int	*dest[5];
+	unsigned int	i;
+
+	init_set_config(args, argc, dest);
 	i = 0;
 	while (i < (unsigned int)argc - 1)
 	{
@@ -72,6 +78,11 @@ static int	set_config(t_philo_config *args, int argc, char **argv)
 		if (errno == ERANGE || *dest[i] > UINT_MAX)
 		{
 			print_colored_error(E_TOO_LARGE_ARG);
+			return (-1);
+		}
+		else if (*dest[i] == 0)
+		{
+			print_colored_error(E_ZERO_ARG);
 			return (-1);
 		}
 		++i;
@@ -93,12 +104,6 @@ t_philo_config	*parse_args(int argc, char **argv)
 	}
 	if (set_config(config, argc, argv))
 	{
-		free(config);
-		return (NULL);
-	}
-	if (config->num_philos == 0)
-	{
-		print_colored_error(E_ZERO_PHILO);
 		free(config);
 		return (NULL);
 	}
