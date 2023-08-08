@@ -73,9 +73,9 @@ pthread_t	*create_threads(t_wisdom *wisdoms)
 	{
 		if (pthread_create(philos + i, NULL, philo_routine, wisdoms + i))
 		{
-			pthread_mutex_lock(&wisdoms->data->terminate_lock);
+			pthread_mutex_lock(&wisdoms->data->lock);
 			wisdoms->data->terminate = true;
-			pthread_mutex_unlock(&wisdoms->data->terminate_lock);
+			pthread_mutex_unlock(&wisdoms->data->lock);
 			free(philos);
 			return (NULL);
 		}

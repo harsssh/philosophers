@@ -27,15 +27,13 @@ void	print_log(t_wisdom *wisdom, const char *format)
 {
 	int64_t	timestamp;
 
-	pthread_mutex_lock(&wisdom->data->terminate_lock);
+	pthread_mutex_lock(&wisdom->data->lock);
 	if (wisdom->data->terminate)
 	{
-		pthread_mutex_unlock(&wisdom->data->terminate_lock);
+		pthread_mutex_unlock(&wisdom->data->lock);
 		return ;
 	}
-	pthread_mutex_unlock(&wisdom->data->terminate_lock);
-	pthread_mutex_lock(&wisdom->data->log_lock);
 	timestamp = get_timestamp(wisdom);
 	printf(format, timestamp, wisdom->id);
-	pthread_mutex_unlock(&wisdom->data->log_lock);
+	pthread_mutex_unlock(&wisdom->data->lock);
 }

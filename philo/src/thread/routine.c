@@ -65,7 +65,7 @@ void	*philo_routine(void *arg)
 
 	wisdom = (t_wisdom *)arg;
 	data = wisdom->data;
-	while (!safe_read_bool(&data->terminate, &data->terminate_lock))
+	while (!safe_read_bool(&data->terminate, &data->lock))
 	{
 		print_log(wisdom, MSG_THINK);
 		philo_eat(wisdom);

@@ -37,18 +37,6 @@ static pthread_mutex_t	*create_forks(t_philo_config config)
 	return (forks);
 }
 
-static int	shared_data_mutex_init(t_shared_data *data)
-{
-	if (pthread_mutex_init(&data->log_lock, NULL))
-		return (-1);
-	if (pthread_mutex_init(&data->terminate_lock, NULL))
-	{
-		pthread_mutex_destroy(&data->log_lock);
-		return (-1);
-	}
-	return (0);
-}
-
 t_shared_data	*create_shared_data(t_philo_config config)
 {
 	t_shared_data	*data;
@@ -62,7 +50,7 @@ t_shared_data	*create_shared_data(t_philo_config config)
 		free(data);
 		return (NULL);
 	}
-	if (shared_data_mutex_init(data))
+	if (pthread_mutex_init(&data->lock, NULL))
 	{
 		free(data->forks);
 		free(data);
@@ -82,6 +70,5 @@ void	destroy_shared_data(t_shared_data *data)
 	while (i < data->config.num_philos)
 		pthread_mutex_destroy(&data->forks[i++]);
 	free(data->forks);
-	pthread_mutex_destroy(&data->log_lock);
-	pthread_mutex_destroy(&data->terminate_lock);
+	pthread_mutex_destroy(&data->lock);
 }

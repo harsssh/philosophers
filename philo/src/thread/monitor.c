@@ -41,9 +41,9 @@ static bool	is_dead(t_wisdom *wisdom)
 
 static void	notify_termination(t_shared_data *data)
 {
-	pthread_mutex_lock(&data->terminate_lock);
+	pthread_mutex_lock(&data->lock);
 	data->terminate = true;
-	pthread_mutex_unlock(&data->terminate_lock);
+	pthread_mutex_unlock(&data->lock);
 }
 
 static int	monitor_each_thread(t_wisdom *wisdoms,

@@ -20,18 +20,17 @@
 
 typedef struct s_shared_data
 {
+	pthread_mutex_t lock;
 	t_philo_config	config;
 	pthread_mutex_t	*forks;
-	pthread_mutex_t	log_lock;
 	bool			terminate;
-	pthread_mutex_t	terminate_lock;
 	struct timeval	start_time;
 }					t_shared_data;
 
 typedef struct s_wisdom
 {
-	unsigned int	id;
 	pthread_mutex_t lock;
+	unsigned int	id;
 	struct timeval	last_eat;
 	unsigned int	eat_count;
 	t_shared_data	*data;
