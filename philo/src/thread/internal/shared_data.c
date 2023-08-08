@@ -6,11 +6,11 @@
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 00:21:57 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/08 00:21:58 by kemizuki         ###   ########.fr       */
+/*   Updated: 2023/08/08 15:21:51 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "thread.h"
+#include "thread/thread.h"
 #include <pthread.h>
 #include <stdlib.h>
 
@@ -37,7 +37,7 @@ static pthread_mutex_t	*create_forks(t_philo_config *config)
 	return (forks);
 }
 
-static int	mutex_init(t_shared_data *data)
+static int	shared_data_mutex_init(t_shared_data *data)
 {
 	if (pthread_mutex_init(&data->log_lock, NULL))
 		return (-1);
@@ -62,7 +62,7 @@ t_shared_data	*create_shared_data(t_philo_config *config)
 		free(data);
 		return (NULL);
 	}
-	if (mutex_init(data))
+	if (shared_data_mutex_init(data))
 	{
 		free(data->forks);
 		free(data);
@@ -72,4 +72,17 @@ t_shared_data	*create_shared_data(t_philo_config *config)
 	data->terminate = false;
 	gettimeofday(&data->start_time, NULL);
 	return (data);
+}
+
+void	destroy_shared_data(t_shared_data *data)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (i < data->config->num_philos)
+		pthread_mutex_destroy(&data->forks[i++]);
+	free(data->forks);
+	pthread_mutex_destroy(&data->log_lock);
+	pthread_mutex_destroy(&data->terminate_lock);
+	free(data->config);
 }

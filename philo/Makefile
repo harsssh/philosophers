@@ -1,12 +1,12 @@
-NAME := philo
+NAME:=philo
 
-SRC_DIR := src
-BUILD_DIR := build
+SRC_DIR:=src
+BUILD_DIR:=build
 
-CFLAGS := -g -fsanitize=thread -Wall -Wextra -Werror -Ilibft/include -Isrc
-DEPFLAGS = -MT $@ -MMD -MP -MF $(BUILD_DIR)/$*.d
+CFLAGS:=-g -fsanitize=thread -Wall -Wextra -Werror -Ilibft/include -Isrc
+DEPFLAGS=-MT $@ -MMD -MP -MF $(BUILD_DIR)/$*.d
 
-SRC:=$(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/**/*.c)
+SRC:=$(shell find $(SRC_DIR) -name '*.c')
 OBJ:=$(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRC))
 DEP:=$(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.d,$(SRC))
 

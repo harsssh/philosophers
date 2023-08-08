@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "internal.h"
+#include "args/internal.h"
 #include <errno.h>
 #include <limits.h>
 

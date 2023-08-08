@@ -25,8 +25,4 @@ t_shared_data	*create_shared_data(t_philo_config *config);
 void			destroy_shared_data(t_shared_data *data);
 void			print_log(t_wisdom *wisdom, const char *format);
 
-bool			safe_read_bool(const bool *ptr, pthread_mutex_t *lock);
-unsigned int	safe_read_uint(const unsigned int *ptr, pthread_mutex_t *lock);
-void			safe_increment_uint(unsigned int *ptr, pthread_mutex_t *lock);
-
 #endif
