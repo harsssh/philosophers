@@ -15,7 +15,7 @@
 #include "util/util.h"
 #include <unistd.h>
 
-#define DELAY 5000
+#define DELAY 1000
 
 static bool	is_satisfied(t_wisdom *wisdom)
 {

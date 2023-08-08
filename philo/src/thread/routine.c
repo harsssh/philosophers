@@ -6,37 +6,36 @@
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:42:23 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/08 00:21:04 by kemizuki         ###   ########.fr       */
+/*   Updated: 2023/08/08 11:53:07 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "internal.h"
 #include "thread.h"
+#include "util/util.h"
 #include <unistd.h>
 
 static void	philo_think(t_wisdom *wisdom)
 {
-	pthread_mutex_t	*left_fork;
-	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	*first_fork;
+	pthread_mutex_t	*second_fork;
 
 	print_log(wisdom, MSG_THINK);
-	left_fork = wisdom->data->forks + (wisdom->id - 1);
-	right_fork = wisdom->data->forks + wisdom->id
+	first_fork = wisdom->data->forks + (wisdom->id - 1);
+	second_fork = wisdom->data->forks + wisdom->id
 		% wisdom->data->config->num_philos;
 	if (wisdom->id & 1)
+		swap_pointer((void **)&first_fork, (void **)&second_fork);
+	pthread_mutex_lock(second_fork);
+	print_log(wisdom, MSG_TAKE_FORK);
+	if (wisdom->data->config->num_philos == 1)
 	{
-		pthread_mutex_lock(left_fork);
-		print_log(wisdom, MSG_TAKE_FORK);
-		pthread_mutex_lock(right_fork);
-		print_log(wisdom, MSG_TAKE_FORK);
+		pthread_mutex_unlock(second_fork);
+		usleep(wisdom->data->config->die_time * 2 * 1000);
+		return ;
 	}
-	else
-	{
-		pthread_mutex_lock(right_fork);
-		print_log(wisdom, MSG_TAKE_FORK);
-		pthread_mutex_lock(left_fork);
-		print_log(wisdom, MSG_TAKE_FORK);
-	}
+	pthread_mutex_lock(first_fork);
+	print_log(wisdom, MSG_TAKE_FORK);
 }
 
 static void	philo_eat(t_wisdom *wisdom)
