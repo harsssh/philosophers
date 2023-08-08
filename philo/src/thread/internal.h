@@ -6,7 +6,7 @@
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:43:44 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/08 00:21:35 by kemizuki         ###   ########.fr       */
+/*   Updated: 2023/08/08 15:01:01 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,18 @@
 
 # include "thread.h"
 
-# define MSG_TAKE_FORK "%llu %u has taken a fork\n"
-# define MSG_EAT "%llu %u is eating\n"
-# define MSG_SLEEP "%llu %u is sleeping\n"
-# define MSG_THINK "%llu %u is thinking\n"
-# define MSG_DIE "%llu %u died\n"
+# define MSG_TAKE_FORK	"%llu %u has taken a fork\n"
+# define MSG_EAT		"%llu %u is eating\n"
+# define MSG_SLEEP		"%llu %u is sleeping\n"
+# define MSG_THINK		"%llu %u is thinking\n"
+# define MSG_DIE		"%llu %u died\n"
 
 t_shared_data	*create_shared_data(t_philo_config *config);
 void			destroy_shared_data(t_shared_data *data);
 void			print_log(t_wisdom *wisdom, const char *format);
+
+bool			safe_read_bool(const bool *ptr, pthread_mutex_t *lock);
+unsigned int	safe_read_uint(const unsigned int *ptr, pthread_mutex_t *lock);
+void			safe_increment_uint(unsigned int *ptr, pthread_mutex_t *lock);
 
 #endif
