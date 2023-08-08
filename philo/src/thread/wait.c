@@ -11,12 +11,16 @@
 /* ************************************************************************** */
 
 #include <pthread.h>
+#include <stdlib.h>
+#include "thread.h"
 
-void	wait_threads(pthread_t *philos, unsigned int num_philos)
+void	wait_dinner_end(t_dinner dinner, unsigned int num_philos)
 {
 	unsigned int	i;
 
 	i = 0;
 	while (i < num_philos)
-		pthread_join(philos[i++], NULL);
+		pthread_join(dinner.philos[i++], NULL);
+	free(dinner.philos);
+	destroy_wisdoms(dinner.wisdoms);
 }

@@ -10,9 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "internal.h"
 #include "thread.h"
 #include <stdlib.h>
+
+void	destroy_shared_data(t_shared_data *data)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (i < data->config.num_philos)
+		pthread_mutex_destroy(&data->forks[i++]);
+	free(data->forks);
+	pthread_mutex_destroy(&data->lock);
+}
 
 void	destroy_wisdoms(t_wisdom *wisdoms)
 {

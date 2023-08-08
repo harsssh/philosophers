@@ -18,6 +18,15 @@
 # include <stdbool.h>
 # include <sys/time.h>
 
+# define MSG_TAKE_FORK	"%llu %u has taken a fork\n"
+# define MSG_EAT		"%llu %u is eating\n"
+# define MSG_SLEEP		"%llu %u is sleeping\n"
+# define MSG_THINK		"%llu %u is thinking\n"
+# define MSG_DIE		"%llu %u died\n"
+
+# define INIT_FAILURE	-1
+# define INIT_SUCCESS	0
+
 typedef struct s_shared_data
 {
 	pthread_mutex_t lock;
@@ -36,13 +45,29 @@ typedef struct s_wisdom
 	t_shared_data	*data;
 }					t_wisdom;
 
-t_wisdom			*create_wisdoms(t_philo_config config);
-pthread_t			*create_threads(t_wisdom *wisdoms);
+typedef struct s_dinner
+{
+	pthread_t 		*philos;
+	t_wisdom		*wisdoms;
+} 					t_dinner;
 
-void				destroy_wisdoms(t_wisdom *wisdoms);
+// destroy.c
+void		destroy_wisdoms(t_wisdom *wisdoms);
+void		destroy_shared_data(t_shared_data *data);
 
-void				*philo_routine(void *arg);
-void				monitor_threads(t_wisdom *wisdoms);
-void				wait_threads(pthread_t *philos, unsigned int num_philos);
+// start.c
+int			start_dinner(t_dinner *dinner, t_philo_config config);
+
+// log.c
+void		print_log(t_wisdom *wisdom, const char *format);
+
+// routine.c
+void		*philo_routine(void *arg);
+
+// monitor.c
+void		monitor_threads(t_wisdom *wisdoms);
+
+// wait.c
+void		wait_dinner_end(t_dinner dinner, unsigned int num_philos);
 
 #endif

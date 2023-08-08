@@ -12,28 +12,18 @@
 
 #include "args/args.h"
 #include "thread/thread.h"
-#include <pthread.h>
 #include <stdlib.h>
 
 int	main(int argc, char **argv)
 {
-	t_philo_config config;
-	t_wisdom	*wisdoms;
-	pthread_t	*philos;
+	t_philo_config 	config;
+	t_dinner		dinner;
 
 	if (parse_args(&config, argc, argv) == PARSE_ERROR)
 		return (EXIT_FAILURE);
-	wisdoms = create_wisdoms(config);
-	if (wisdoms == NULL)
+	if (start_dinner(&dinner, config) == INIT_FAILURE)
 		return (EXIT_FAILURE);
-	philos = create_threads(wisdoms);
-	if (philos == NULL)
-	{
-		destroy_wisdoms(wisdoms);
-		return (EXIT_FAILURE);
-	}
-	monitor_threads(wisdoms);
-	wait_threads(philos, wisdoms->data->config.num_philos);
-	destroy_wisdoms(wisdoms);
+	monitor_threads(dinner.wisdoms);
+	wait_dinner_end(dinner, config.num_philos);
 	return (EXIT_SUCCESS);
 }

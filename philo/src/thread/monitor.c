@@ -10,12 +10,36 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "internal.h"
 #include "thread.h"
 #include "util/util.h"
 #include <unistd.h>
 
 #define DELAY 1000
+
+static bool	is_satisfied(t_wisdom *wisdom);
+static bool	is_dead(t_wisdom *wisdom);
+static void	notify_termination(t_shared_data *data);
+static int	monitor_each_thread(t_wisdom *wisdoms, unsigned int *satisfied_philos);
+
+void	monitor_threads(t_wisdom *wisdoms)
+{
+	t_philo_config	config;
+	unsigned int	satisfied_philos;
+
+	config = wisdoms->data->config;
+	while (true)
+	{
+		satisfied_philos = 0;
+		if (monitor_each_thread(wisdoms, &satisfied_philos))
+			return ;
+		if (config.has_optional_arg && satisfied_philos == config.num_philos)
+		{
+			notify_termination(wisdoms->data);
+			return ;
+		}
+		usleep(DELAY);
+	}
+}
 
 static bool	is_satisfied(t_wisdom *wisdom)
 {
@@ -65,24 +89,4 @@ static int	monitor_each_thread(t_wisdom *wisdoms,
 		++i;
 	}
 	return (0);
-}
-
-void	monitor_threads(t_wisdom *wisdoms)
-{
-	t_philo_config	config;
-	unsigned int	satisfied_philos;
-
-	config = wisdoms->data->config;
-	while (true)
-	{
-		satisfied_philos = 0;
-		if (monitor_each_thread(wisdoms, &satisfied_philos))
-			return ;
-		if (config.has_optional_arg && satisfied_philos == config.num_philos)
-		{
-			notify_termination(wisdoms->data);
-			return ;
-		}
-		usleep(DELAY);
-	}
 }

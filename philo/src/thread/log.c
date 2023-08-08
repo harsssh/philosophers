@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "thread/thread.h"
+#include "thread.h"
 #include "util/util.h"
 #include <stdint.h>
 #include <stdio.h>
