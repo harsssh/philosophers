@@ -16,8 +16,6 @@
 # include <stdint.h>
 # include <sys/time.h>
 
-void			safe_free(void **ptr);
-
 void			swap_pointer(void **a, void **b);
 
 int64_t			difftimeval(struct timeval t1, struct timeval t2);
