@@ -35,7 +35,28 @@ suseconds_t difftimeval_us(struct timeval t1, struct timeval t2)
 	return (diff);
 }
 
-void	msleep(unsigned int msec)
+struct timeval timeval_add_ms(struct timeval t, int msec)
 {
-	usleep(msec * USEC_IN_MSEC);
+	t.tv_usec += (msec % MSEC_IN_SEC) * USEC_IN_MSEC;
+	t.tv_sec += msec / MSEC_IN_SEC + t.tv_usec / USEC_IN_SEC;
+	t.tv_usec %= USEC_IN_SEC;
+	return (t);
+}
+
+void	precise_msleep(unsigned int msec)
+{
+	struct timeval	start;
+	struct timeval	end;
+	struct timeval	now;
+	suseconds_t 	diff;
+
+	gettimeofday(&start, NULL);
+	end = timeval_add_ms(start, (int)msec);
+	diff = difftimeval_us(start, end);
+	while (diff > 0)
+	{
+		usleep(diff / 2);
+		gettimeofday(&now, NULL);
+		diff = difftimeval_us(now, end);
+	}
 }

@@ -20,7 +20,8 @@ void			swap_pointer(void **a, void **b);
 
 int64_t			difftimeval_ms(struct timeval t1, struct timeval t2);
 int64_t			difftimeval_us(struct timeval t1, struct timeval t2);
-void			msleep(unsigned int msec);
+struct timeval 	timeval_add_ms(struct timeval t, int msec);
+void			precise_msleep(unsigned int msec);
 
 bool			safe_read_bool(const bool *ptr, pthread_mutex_t *lock);
 unsigned int	safe_read_uint(const unsigned int *ptr, pthread_mutex_t *lock);
