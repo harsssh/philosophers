@@ -26,7 +26,7 @@ static void	choose_forks(t_wisdom *wisdom, pthread_mutex_t **first_fork,
 static void	take_fork(t_wisdom *wisdom, pthread_mutex_t *fork)
 {
 	pthread_mutex_lock(fork);
-	print_log(wisdom, MSG_TAKE_FORK);
+	print_log(wisdom, MSG_TAKE_FORK, NULL, NULL);
 }
 
 static void	philo_eat(t_wisdom *wisdom)
@@ -44,8 +44,7 @@ static void	philo_eat(t_wisdom *wisdom)
 	}
 	take_fork(wisdom, second_fork);
 	safe_increment_uint(&wisdom->eat_count, &wisdom->lock);
-	safe_update_timeval(&wisdom->last_eat, &wisdom->lock);
-	print_log(wisdom, MSG_EAT);
+	print_log(wisdom, MSG_EAT, &wisdom->last_eat, &wisdom->lock);
 	precise_msleep(wisdom->data->config.eat_time);
 	pthread_mutex_unlock(second_fork);
 	pthread_mutex_unlock(first_fork);
@@ -53,7 +52,7 @@ static void	philo_eat(t_wisdom *wisdom)
 
 static void	philo_sleep(t_wisdom *wisdom)
 {
-	print_log(wisdom, MSG_SLEEP);
+	print_log(wisdom, MSG_SLEEP, NULL, NULL);
 	precise_msleep(wisdom->data->config.sleep_time);
 }
 
@@ -66,7 +65,7 @@ void	*philo_routine(void *arg)
 	data = wisdom->data;
 	while (!safe_read_bool(&data->terminate, &data->lock))
 	{
-		print_log(wisdom, MSG_THINK);
+		print_log(wisdom, MSG_THINK, NULL, NULL);
 		philo_eat(wisdom);
 		philo_sleep(wisdom);
 	}

@@ -55,13 +55,15 @@ static bool	is_satisfied(t_wisdom *wisdom)
 static bool	is_dead(t_wisdom *wisdom)
 {
 	struct timeval	now;
-	bool			dead;
+	struct timeval  deadline;
+	suseconds_t 	time_left;
 
 	gettimeofday(&now, NULL);
 	pthread_mutex_lock(&wisdom->lock);
-	dead = difftimeval_ms(wisdom->last_eat, now) >= wisdom->data->config.die_time;
+	deadline = timeval_add_ms(wisdom->last_eat, wisdom->data->config.die_time);
+	time_left = difftimeval_us(now, deadline);
 	pthread_mutex_unlock(&wisdom->lock);
-	return (dead);
+	return (time_left <= 0);
 }
 
 static void	notify_termination(t_shared_data *data)
@@ -83,7 +85,7 @@ static int	monitor_each_thread(t_wisdom *wisdoms,
 			++(*satisfied_philos);
 		if (is_dead(wisdoms + i))
 		{
-			print_log(wisdoms + i, MSG_DIE);
+			print_log(wisdoms + i, MSG_DIE, NULL, NULL);
 			notify_termination(wisdoms->data);
 			return (-1);
 		}

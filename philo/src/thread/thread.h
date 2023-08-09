@@ -59,7 +59,7 @@ void	destroy_shared_data(t_shared_data *data);
 int		start_dinner(t_dinner *dinner, t_philo_config config);
 
 // log.c
-void	print_log(t_wisdom *wisdom, const char *format);
+void print_log(t_wisdom *wisdom, const char *format, struct timeval *dest, pthread_mutex_t *dest_lock);
 
 // routine.c
 void	*philo_routine(void *arg);

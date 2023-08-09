@@ -15,17 +15,25 @@
 #include <stdint.h>
 #include <stdio.h>
 
-static int64_t	get_timestamp(t_wisdom *wisdom)
+static unsigned int get_timestamp(t_wisdom *wisdom, struct timeval *dest, pthread_mutex_t *dest_lock)
 {
-	struct timeval	now;
+	struct timeval now;
 
 	gettimeofday(&now, NULL);
+	if (dest != NULL)
+	{
+		if (dest_lock != NULL)
+			pthread_mutex_lock(dest_lock);
+		*dest = now;
+		if (dest_lock != NULL)
+			pthread_mutex_unlock(dest_lock);
+	}
 	return (difftimeval_ms(wisdom->data->start_time, now));
 }
 
-void	print_log(t_wisdom *wisdom, const char *format)
+void print_log(t_wisdom *wisdom, const char *format, struct timeval *dest, pthread_mutex_t *dest_lock)
 {
-	int64_t	timestamp;
+	unsigned int timestamp;
 
 	pthread_mutex_lock(&wisdom->data->lock);
 	if (wisdom->data->terminate)
@@ -33,7 +41,7 @@ void	print_log(t_wisdom *wisdom, const char *format)
 		pthread_mutex_unlock(&wisdom->data->lock);
 		return ;
 	}
-	timestamp = get_timestamp(wisdom);
+	timestamp = get_timestamp(wisdom, dest, dest_lock);
 	printf(format, timestamp, wisdom->id);
 	pthread_mutex_unlock(&wisdom->data->lock);
 }

@@ -18,8 +18,8 @@
 
 void			swap_pointer(void **a, void **b);
 
-int64_t			difftimeval_ms(struct timeval t1, struct timeval t2);
-int64_t			difftimeval_us(struct timeval t1, struct timeval t2);
+int 			difftimeval_ms(struct timeval t1, struct timeval t2);
+suseconds_t 	difftimeval_us(struct timeval t1, struct timeval t2);
 struct timeval 	timeval_add_ms(struct timeval t, int msec);
 void			precise_msleep(unsigned int msec);
 
