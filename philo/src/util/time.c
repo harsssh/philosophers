@@ -13,14 +13,18 @@
 #include <sys/time.h>
 #include <unistd.h>
 
-int64_t	difftimeval(struct timeval t1, struct timeval t2)
+# define USEC_IN_MSEC 	1000
+# define MSEC_IN_SEC 	1000
+# define USEC_IN_SEC 	1000000
+
+int64_t	difftimeval_ms(struct timeval t1, struct timeval t2)
 {
 	int64_t	sec;
 	int64_t	usec;
 
 	sec = t2.tv_sec - t1.tv_sec;
 	usec = t2.tv_usec - t1.tv_usec;
-	return (sec * 1000 + usec / 1000);
+	return (sec * MSEC_IN_SEC + usec / USEC_IN_MSEC);
 }
 
 int64_t	difftimeval_us(struct timeval t1, struct timeval t2)
@@ -30,10 +34,10 @@ int64_t	difftimeval_us(struct timeval t1, struct timeval t2)
 
 	sec = t2.tv_sec - t1.tv_sec;
 	usec = t2.tv_usec - t1.tv_usec;
-	return (sec * 1000000 + usec);
+	return (sec * USEC_IN_SEC + usec);
 }
 
 void	msleep(unsigned int msec)
 {
-	usleep(msec * 1000);
+	usleep(msec * USEC_IN_MSEC);
 }

@@ -59,7 +59,7 @@ static bool	is_dead(t_wisdom *wisdom)
 
 	gettimeofday(&now, NULL);
 	pthread_mutex_lock(&wisdom->lock);
-	dead = difftimeval(wisdom->last_eat, now) >= wisdom->data->config.die_time;
+	dead = difftimeval_ms(wisdom->last_eat, now) >= wisdom->data->config.die_time;
 	pthread_mutex_unlock(&wisdom->lock);
 	return (dead);
 }

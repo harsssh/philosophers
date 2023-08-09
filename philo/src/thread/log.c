@@ -20,7 +20,7 @@ static int64_t	get_timestamp(t_wisdom *wisdom)
 	struct timeval	now;
 
 	gettimeofday(&now, NULL);
-	return (difftimeval(wisdom->data->start_time, now));
+	return (difftimeval_ms(wisdom->data->start_time, now));
 }
 
 void	print_log(t_wisdom *wisdom, const char *format)
