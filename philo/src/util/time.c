@@ -17,24 +17,22 @@
 # define MSEC_IN_SEC 	1000
 # define USEC_IN_SEC 	1000000
 
-int64_t	difftimeval_ms(struct timeval t1, struct timeval t2)
+int difftimeval_ms(struct timeval t1, struct timeval t2)
 {
-	int64_t	sec;
-	int64_t	usec;
+	int diff;
 
-	sec = t2.tv_sec - t1.tv_sec;
-	usec = t2.tv_usec - t1.tv_usec;
-	return (sec * MSEC_IN_SEC + usec / USEC_IN_MSEC);
+	diff = (suseconds_t)(t2.tv_sec - t1.tv_sec) * MSEC_IN_SEC;
+	diff += (t2.tv_usec - t1.tv_usec) / USEC_IN_MSEC;
+	return (diff);
 }
 
-int64_t	difftimeval_us(struct timeval t1, struct timeval t2)
+suseconds_t difftimeval_us(struct timeval t1, struct timeval t2)
 {
-	int64_t	sec;
-	int64_t	usec;
+	suseconds_t diff;
 
-	sec = t2.tv_sec - t1.tv_sec;
-	usec = t2.tv_usec - t1.tv_usec;
-	return (sec * USEC_IN_SEC + usec);
+	diff = (suseconds_t)(t2.tv_sec - t1.tv_sec) * USEC_IN_SEC;
+	diff += t2.tv_usec - t1.tv_usec;
+	return (diff);
 }
 
 void	msleep(unsigned int msec)
