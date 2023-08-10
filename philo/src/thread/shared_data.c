@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shared_data.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/10 18:56:39 by kemizuki          #+#    #+#             */
+/*   Updated: 2023/08/10 18:56:40 by kemizuki         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "thread.h"
 #include "util/util.h"
 #include <pthread.h>
@@ -26,17 +38,17 @@ static pthread_mutex_t	*create_forks(t_philo_config config)
 	return (forks);
 }
 
-static unsigned int calc_eat_interval(t_philo_config config)
+static unsigned int	calc_eat_interval(t_philo_config config)
 {
-	const unsigned int n = config.num_philos;
-	const unsigned int k = n / 2;
-	unsigned int candidate;
+	const unsigned int	n = config.num_philos;
+	const unsigned int	k = n / 2;
+	unsigned int		candidate;
 
 	candidate = (unsigned int)ft_ceil((double)n * config.eat_time / k);
-	return ft_max(candidate, config.eat_time + config.sleep_time);
+	return (ft_max(candidate, config.eat_time + config.sleep_time));
 }
 
-static void init_shared_data(t_shared_data *data, t_philo_config config)
+static void	init_shared_data(t_shared_data *data, t_philo_config config)
 {
 	data->config = config;
 	data->terminate = false;

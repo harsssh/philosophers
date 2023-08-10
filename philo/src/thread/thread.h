@@ -6,7 +6,7 @@
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 18:56:16 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/08 22:41:02 by kemizuki         ###   ########.fr       */
+/*   Updated: 2023/08/10 18:55:54 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 # include <stdbool.h>
 # include <sys/time.h>
 
-# define MSG_TAKE_FORK	"%llu %u has taken a fork\n"
-# define MSG_EAT		"%llu %u is eating\n"
-# define MSG_SLEEP		"%llu %u is sleeping\n"
-# define MSG_THINK		"%llu %u is thinking\n"
-# define MSG_DIE		"%llu %u died\n"
+# define MSG_TAKE_FORK "%llu %u has taken a fork\n"
+# define MSG_EAT "%llu %u is eating\n"
+# define MSG_SLEEP "%llu %u is sleeping\n"
+# define MSG_THINK "%llu %u is thinking\n"
+# define MSG_DIE "%llu %u died\n"
 
 # define INIT_FAILURE -1
 # define INIT_SUCCESS 0
@@ -34,14 +34,14 @@ typedef struct s_shared_data
 	pthread_mutex_t	*forks;
 	bool			terminate;
 	struct timeval	start_time;
-	unsigned int 	eat_interval;
+	unsigned int	eat_interval;
 }					t_shared_data;
 
 typedef struct s_wisdom
 {
 	pthread_mutex_t	lock;
 	unsigned int	id;
-	struct timeval 	next_eat;
+	struct timeval	next_eat;
 	struct timeval	last_eat;
 	unsigned int	eat_count;
 	t_shared_data	*data;
@@ -54,25 +54,26 @@ typedef struct s_dinner
 }					t_dinner;
 
 // destroy.c
-void	destroy_wisdoms(t_wisdom *wisdoms);
-void	destroy_shared_data(t_shared_data *data);
+void				destroy_wisdoms(t_wisdom *wisdoms);
+void				destroy_shared_data(t_shared_data *data);
 
 // shared_data.c
-t_shared_data	*create_shared_data(t_philo_config config);
+t_shared_data		*create_shared_data(t_philo_config config);
 
 // start.c
-int		start_dinner(t_dinner *dinner, t_philo_config config);
+int					start_dinner(t_dinner *dinner, t_philo_config config);
 
 // log.c
-void print_log(t_wisdom *wisdom, const char *format, struct timeval *dest, pthread_mutex_t *dest_lock);
+void				print_log(t_wisdom *wisdom, const char *format,
+						struct timeval *dest, pthread_mutex_t *dest_lock);
 
 // routine.c
-void	*philo_routine(void *arg);
+void				*philo_routine(void *arg);
 
 // monitor.c
-void	monitor_threads(t_wisdom *wisdoms);
+void				monitor_threads(t_wisdom *wisdoms);
 
 // wait.c
-void	wait_dinner_end(t_dinner dinner, unsigned int num_philos);
+void				wait_dinner_end(t_dinner dinner, unsigned int num_philos);
 
 #endif

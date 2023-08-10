@@ -6,7 +6,7 @@
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 16:40:48 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/07 16:40:49 by kemizuki         ###   ########.fr       */
+/*   Updated: 2023/08/10 18:56:54 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 #include <stdint.h>
 #include <stdio.h>
 
-static unsigned int get_timestamp(t_wisdom *wisdom, struct timeval *dest, pthread_mutex_t *dest_lock)
+static unsigned int	get_timestamp(t_wisdom *wisdom, struct timeval *dest,
+		pthread_mutex_t *dest_lock)
 {
-	struct timeval now;
+	struct timeval	now;
 
 	gettimeofday(&now, NULL);
 	if (dest != NULL)
@@ -31,9 +32,10 @@ static unsigned int get_timestamp(t_wisdom *wisdom, struct timeval *dest, pthrea
 	return (difftimeval_ms(wisdom->data->start_time, now));
 }
 
-void print_log(t_wisdom *wisdom, const char *format, struct timeval *dest, pthread_mutex_t *dest_lock)
+void	print_log(t_wisdom *wisdom, const char *format, struct timeval *dest,
+		pthread_mutex_t *dest_lock)
 {
-	unsigned int timestamp;
+	unsigned int	timestamp;
 
 	pthread_mutex_lock(&wisdom->data->lock);
 	if (wisdom->data->terminate)

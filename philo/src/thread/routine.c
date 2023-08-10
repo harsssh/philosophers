@@ -6,7 +6,7 @@
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:42:23 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/08 15:01:53 by kemizuki         ###   ########.fr       */
+/*   Updated: 2023/08/10 18:55:18 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ static void	philo_eat(t_wisdom *wisdom)
 	safe_increment_uint(&wisdom->eat_count, &wisdom->lock);
 	print_log(wisdom, MSG_EAT, &wisdom->last_eat, &wisdom->lock);
 	precise_msleep(wisdom->data->config.eat_time);
-	wisdom->next_eat = timeval_add_ms(wisdom->last_eat,wisdom->data->eat_interval);
+	wisdom->next_eat = timeval_add_ms(wisdom->last_eat,
+			wisdom->data->eat_interval);
 	pthread_mutex_unlock(second_fork);
 	pthread_mutex_unlock(first_fork);
 }

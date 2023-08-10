@@ -6,7 +6,7 @@
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 23:15:31 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/08 22:42:43 by kemizuki         ###   ########.fr       */
+/*   Updated: 2023/08/10 18:56:03 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ static bool	is_satisfied(t_wisdom *wisdom)
 static bool	is_dead(t_wisdom *wisdom)
 {
 	struct timeval	now;
-	struct timeval  deadline;
-	suseconds_t 	time_left;
+	struct timeval	deadline;
+	suseconds_t		time_left;
 
 	gettimeofday(&now, NULL);
 	pthread_mutex_lock(&wisdom->lock);

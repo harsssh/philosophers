@@ -6,7 +6,7 @@
 /*   By: kemizuki <kemizuki@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 19:04:03 by kemizuki          #+#    #+#             */
-/*   Updated: 2023/08/08 22:39:53 by kemizuki         ###   ########.fr       */
+/*   Updated: 2023/08/10 19:05:08 by kemizuki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@
 #include <pthread.h>
 #include <stdlib.h>
 
-static struct timeval calc_next_eat(t_shared_data *data, unsigned int id)
+static struct timeval	calc_next_eat(t_shared_data *data, unsigned int id)
 {
-	const unsigned int 	n = data->config.num_philos;
-	const unsigned int 	k = n / 2;
-	unsigned int 		unit;
-	unsigned int 		wait;
+	const unsigned int	n = data->config.num_philos;
+	const unsigned int	k = n / 2;
+	unsigned int		unit;
+	unsigned int		wait;
 
 	unit = (unsigned int)ft_ceil((double)data->config.eat_time / k);
 	wait = unit * ((id * k) % n);
@@ -73,11 +73,8 @@ static t_wisdom	*create_wisdoms(t_philo_config config)
 	return (wisdoms);
 }
 
-int	start_dinner(t_dinner *dinner, t_philo_config config)
+static int	init_dinner(t_dinner *dinner, t_philo_config config)
 {
-	unsigned int	i;
-	t_shared_data	*data;
-
 	dinner->wisdoms = create_wisdoms(config);
 	if (dinner->wisdoms == NULL)
 		return (INIT_FAILURE);
@@ -87,16 +84,24 @@ int	start_dinner(t_dinner *dinner, t_philo_config config)
 		destroy_wisdoms(dinner->wisdoms);
 		return (INIT_FAILURE);
 	}
+	return (INIT_SUCCESS);
+}
+
+int	start_dinner(t_dinner *dinner, t_philo_config config)
+{
+	unsigned int	i;
+	t_shared_data	*data;
+
+	if (init_dinner(dinner, config) == INIT_FAILURE)
+		return (INIT_FAILURE);
 	i = 0;
 	data = dinner->wisdoms->data;
 	while (i < config.num_philos)
 	{
 		if (pthread_create(dinner->philos + i, NULL, philo_routine,
-						   dinner->wisdoms + i))
+				dinner->wisdoms + i))
 		{
-			pthread_mutex_lock(&data->lock);
-			data->terminate = true;
-			pthread_mutex_unlock(&data->lock);
+			safe_write_bool(&data->terminate, true, &data->lock);
 			wait_dinner_end(*dinner, i);
 			return (INIT_FAILURE);
 		}
