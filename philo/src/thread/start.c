@@ -16,15 +16,15 @@
 #include <pthread.h>
 #include <stdlib.h>
 
-static struct timeval calc_next_eat(t_shared_data *data, unsigned int i)
+static struct timeval calc_next_eat(t_shared_data *data, unsigned int id)
 {
-	unsigned int k;
-	unsigned int unit;
-	unsigned int wait;
+	const unsigned int 	n = data->config.num_philos;
+	const unsigned int 	k = n / 2;
+	unsigned int 		unit;
+	unsigned int 		wait;
 
-	k = data->config.num_philos / 2;
 	unit = (unsigned int)ft_ceil((double)data->config.eat_time / k);
-	wait = unit * ((i * (k + 1)) % data->config.num_philos);
+	wait = unit * ((id * k) % n);
 	return (timeval_add_ms(data->start_time, wait));
 }
 
@@ -44,7 +44,7 @@ static int	init_wisdoms(t_wisdom *wisdoms, t_shared_data *data)
 		wisdoms[i].id = i + 1;
 		wisdoms[i].eat_count = 0;
 		wisdoms[i].last_eat = data->start_time;
-		wisdoms[i].next_eat = calc_next_eat(data, i);
+		wisdoms[i].next_eat = calc_next_eat(data, wisdoms[i].id);
 		wisdoms[i].data = data;
 		++i;
 	}

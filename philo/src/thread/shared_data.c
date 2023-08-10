@@ -28,12 +28,12 @@ static pthread_mutex_t	*create_forks(t_philo_config config)
 
 static unsigned int calc_eat_interval(t_philo_config config)
 {
-	unsigned int k;
+	const unsigned int n = config.num_philos;
+	const unsigned int k = n / 2;
 	unsigned int candidate;
 
-	k = config.num_philos / 2;
-	candidate = (unsigned int)ft_ceil((double)(k+1) * config.eat_time/ k);
-	return config.eat_time + ft_max(candidate, config.sleep_time);
+	candidate = (unsigned int)ft_ceil((double)n * config.eat_time / k);
+	return ft_max(candidate, config.eat_time + config.sleep_time);
 }
 
 static void init_shared_data(t_shared_data *data, t_philo_config config)
