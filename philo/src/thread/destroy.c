@@ -22,6 +22,7 @@ void	destroy_shared_data(t_shared_data *data)
 		pthread_mutex_destroy(&data->forks[i++]);
 	free(data->forks);
 	pthread_mutex_destroy(&data->lock);
+	free(data);
 }
 
 void	destroy_wisdoms(t_wisdom *wisdoms)
