@@ -34,12 +34,14 @@ typedef struct s_shared_data
 	pthread_mutex_t	*forks;
 	bool			terminate;
 	struct timeval	start_time;
+	unsigned int 	eat_interval;
 }					t_shared_data;
 
 typedef struct s_wisdom
 {
 	pthread_mutex_t	lock;
 	unsigned int	id;
+	struct timeval 	next_eat;
 	struct timeval	last_eat;
 	unsigned int	eat_count;
 	t_shared_data	*data;
@@ -54,6 +56,9 @@ typedef struct s_dinner
 // destroy.c
 void	destroy_wisdoms(t_wisdom *wisdoms);
 void	destroy_shared_data(t_shared_data *data);
+
+// shared_data.c
+t_shared_data	*create_shared_data(t_philo_config config);
 
 // start.c
 int		start_dinner(t_dinner *dinner, t_philo_config config);

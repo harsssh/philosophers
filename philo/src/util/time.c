@@ -12,10 +12,8 @@
 
 #include <sys/time.h>
 #include <unistd.h>
-
-# define USEC_IN_MSEC 	1000
-# define MSEC_IN_SEC 	1000
-# define USEC_IN_SEC 	1000000
+#include <stdbool.h>
+#include "util.h"
 
 int difftimeval_ms(struct timeval t1, struct timeval t2)
 {
@@ -43,20 +41,27 @@ struct timeval timeval_add_ms(struct timeval t, int msec)
 	return (t);
 }
 
+void	precise_msleep_until(struct timeval end)
+{
+	struct timeval	now;
+	suseconds_t 	diff;
+
+	while (true)
+	{
+		gettimeofday(&now, NULL);
+		diff = difftimeval_us(now, end);
+		if (diff <= 0)
+			break ;
+		usleep(diff / 2);
+	}
+}
+
 void	precise_msleep(unsigned int msec)
 {
 	struct timeval	start;
 	struct timeval	end;
-	struct timeval	now;
-	suseconds_t 	diff;
 
 	gettimeofday(&start, NULL);
 	end = timeval_add_ms(start, (int)msec);
-	diff = difftimeval_us(start, end);
-	while (diff > 0)
-	{
-		usleep(diff / 2);
-		gettimeofday(&now, NULL);
-		diff = difftimeval_us(now, end);
-	}
+	precise_msleep_until(end);
 }
